@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 
+	private final static String TAG="MainActivity";
     private final static int SCANNIN_GREQUEST_CODE = 1;
     /**
      * 显示扫描结果
