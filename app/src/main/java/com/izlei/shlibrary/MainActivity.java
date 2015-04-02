@@ -1,25 +1,46 @@
 package com.izlei.shlibrary;
 
+
+import android.app.ProgressDialog;
 import android.content.Intent;
 
 import android.os.Bundle;
+
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class MainActivity extends ActionBarActivity {
+import com.android.volley.Cache;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.com.izlei.app.AppController;
+import com.izlei.shlibrary.utils.ToastUtil;
+
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.bmob.v3.Bmob;
+
+public class MainActivity extends ActionBarActivity implements FindBook.IFindBookObserver{
 
 	private final static String TAG="MainActivity";
     private final static int SCANNIN_GREQUEST_CODE = 1;
+    String url;
+
+    private ProgressDialog pDialog;
+
     /**
      * 显示扫描结果
      */
@@ -36,29 +57,9 @@ public class MainActivity extends ActionBarActivity {
      */
     private ThreeDSlidingLayout slidingLayout;
 
-    /**
-     * menu按钮，点击按钮展示左侧布局，再点击一次隐藏左侧布局。
-     */
-    private Button menuButton;
-
-    /**
-     * 放在content布局中的ListView。
-     */
-    private ListView contentListView;
-
-    /**
-     * 作用于contentListView的适配器。
-     */
-    private ArrayAdapter<String> contentListAdapter;
-
-    /**
-     * 用于填充contentListAdapter的数据源。
-     */
-    private String[] contentItems = { "Content Item 1", "Content Item 2", "Content Item 3",
-            "Content Item 4", "Content Item 5", "Content Item 6", "Content Item 7",
-            "Content Item 8", "Content Item 9", "Content Item 10", "Content Item 11",
-            "Content Item 12", "Content Item 13", "Content Item 14", "Content Item 15",
-            "Content Item 16" };
+    private List<Book> bookList;
+    private ListView listView;
+    private CustomListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,32 +68,26 @@ public class MainActivity extends ActionBarActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        // 初始化 Bmob SDK
+        // 使用时请将第二个参数Application ID替换成你在Bmob服务器端创建的Application ID
+        Bmob.initialize(this, "4fca2c82deb6bc1ac889f5bab7b2fa13");
 //////////////////////////////////////////////////////////////////////////////////
         slidingLayout = (ThreeDSlidingLayout) findViewById(R.id.slidingLayout);
-        menuButton = (Button) findViewById(R.id.menuButton);
-        contentListView = (ListView) findViewById(R.id.contentList);
-        contentListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
-                contentItems);
-        contentListView.setAdapter(contentListAdapter);
-        // 将监听滑动事件绑定在contentListView上
-        slidingLayout.setScrollEvent(contentListView);
-        menuButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (slidingLayout.isLeftLayoutVisible()) {
-                    slidingLayout.scrollToRightLayout();
-                } else {
-                    slidingLayout.scrollToLeftLayout();
-                }
-            }
-        });
-        contentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String text = contentItems[position];
-                Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
-            }
-        });
+        bookList = new ArrayList<>();
+
+        FindBook find = new FindBook();
+        find.addObserver(MainActivity.this);
+
+        find.findALl();
+
+        listView = (ListView) findViewById(R.id.contentList);
+
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
@@ -113,7 +108,11 @@ public class MainActivity extends ActionBarActivity {
 
         switch (id) {
             case android.R.id.home:
-                finish();
+                if (slidingLayout.isLeftLayoutVisible()) {
+                    slidingLayout.scrollToRightLayout();
+                } else {
+                    slidingLayout.scrollToLeftLayout();
+                }
                 return true;
             case R.id.action_scan:
                 Intent intent = new Intent();
@@ -123,6 +122,35 @@ public class MainActivity extends ActionBarActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,Intent data)  {
+        String result = data.getExtras().getString("result");
+        if (result != null) {
+            Intent intent = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putString("ISBN", result);
+            intent.putExtras(bundle);
+            intent.setClass(MainActivity.this, ContentActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void update(int flag, List<Book> book) {
+        switch (flag) {
+            case FindBook.FIND_SUCESS:
+                bookList = book;
+                adapter = new CustomListAdapter(this, bookList);
+                listView.setAdapter(adapter);
+               // adapter.notifyDataSetChanged();
+
+
+                break;
+            default:
+                break;
         }
     }
 }

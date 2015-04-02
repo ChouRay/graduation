@@ -4,6 +4,12 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
-    <string name="scan_text">将二维码放入框内, 即可自动扫描</string>
+    <string name="scan_text">将条形码放入框内, 即可自动扫描</string>
+    <string name="details">图书详情</string>
+    <string name="donation">捐书</string>
+    <string name="borrowing">借书</string>
+    <string name="returnbook">还书</string>
+    <string name="introduction">内容介绍</string>
+    <string name="buy">购买</string>
 
 </resources>

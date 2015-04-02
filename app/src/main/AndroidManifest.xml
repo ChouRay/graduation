@@ -3,10 +3,16 @@
     package="com.izlei.shlibrary" >
 
     <application
+        android:name="com.com.izlei.app.AppController"
         android:allowBackup="true"
         android:icon="@drawable/ic_logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
+        <meta-data
+            android:name="com.thinkland.juheapi.openid"
+            android:value="JH8104b92a348eefdc94cb4372082db779" />
+
         <activity
             android:name=".MainActivity"
             android:logo="@drawable/ic_logo"
@@ -24,12 +30,29 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" >
         </activity>
+
+        <activity android:name=".ContentActivity"
+            android:theme="@android:style/Theme.Holo.Light"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait">
+
+            </activity>
+
     </application>
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CAMERA" />
-
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_LOGS"/>
 
 </manifest>

@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".ContentActivity">
+
+    <item android:id="@+id/action_donate" android:icon="@drawable/ic_action_image_looks_one"
+        android:title="@string/donation"
+        app:showAsAction="ifRoom" />
+    <item android:id="@+id/action_borrow" android:icon="@drawable/ic_action_image_looks_two"
+        android:title="@string/borrowing"
+        app:showAsAction="ifRoom" />
+    <item android:id="@+id/action_return" android:icon="@drawable/ic_action_image_looks_3"
+        android:title="@string/returnbook"
+        app:showAsAction="ifRoom" />
+</menu>
