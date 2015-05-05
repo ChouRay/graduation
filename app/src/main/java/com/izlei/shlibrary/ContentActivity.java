@@ -2,10 +2,10 @@ package com.izlei.shlibrary;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,8 +20,12 @@ import android.widget.Toast;
 
 import com.android.volley.Cache;
 import com.android.volley.toolbox.ImageLoader;
-import com.com.izlei.app.AppController;
+import com.izlei.shlibrary.app.AppController;
 
+import com.izlei.shlibrary.bean.Book;
+import com.izlei.shlibrary.bean.User;
+import com.izlei.shlibrary.test.Login;
+import com.izlei.shlibrary.test.Relations;
 import com.izlei.shlibrary.utils.ToastUtil;
 import com.thinkland.sdk.android.DataCallBack;
 import com.thinkland.sdk.android.JuheData;
@@ -35,24 +39,29 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
+
+import cn.bmob.v3.BmobUser;
 
 
 /**
  * Created by zhouzili on 2015/3/24.
  */
-public class ContentActivity extends Activity {
+public class ContentActivity extends Activity implements FindBook.IFindBookObserver{
+    public static final int STATE_DONATION = 0;
+    public static final int STATE_BORROWING = 1;
+    public static final int STATE_SEENDBACK = 2;
 
+    private int currState = -1;
+    CreateBook createBook;
     FindBook findBook;
-    ArrayList<Book> bookList;
-    boolean isEnableAdd = true;
     TextView tvPublisher = null;
     TextView tvAuthor = null;
     TextView tvTitle = null;
     TextView tvIntroduction = null;
-
     Book book;
+    boolean isAdded = false;
+    boolean isSendBack = false;
 
     private static final String TAG = ContentActivity.class
             .getSimpleName();
@@ -63,7 +72,9 @@ public class ContentActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        findBook = new FindBook();
+        findBook = new FindBook(this);
+        findBook.addObserver(this);
+        createBook = new CreateBook(this);
 
         imageView = (ImageView) findViewById(R.id.imgview);
         tvTitle = (TextView) findViewById(R.id.title);
@@ -78,10 +89,6 @@ public class ContentActivity extends Activity {
         Parameters params = new Parameters();
         params.add("ip", "http://v.juhe.cn/ebook/isbn");
         params.add("dtype", "json");
-        if (bookList == null) {
-            bookList = new ArrayList<>();
-        }
-
 
 
         Bundle bundle  = getIntent().getExtras();
@@ -150,28 +157,10 @@ public class ContentActivity extends Activity {
                 }
             }
         });
-
     }
 
     private void makeImageRequest() {
         ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-
-        // If you are using normal ImageView
-		/*imageLoader.get(Const.URL_IMAGE, new ImageListener() {
-
-			@Override
-			public void onErrorResponse(VolleyError error) {
-				Log.e(TAG, "Image Load Error: " + error.getMessage());
-			}
-
-			@Override
-			public void onResponse(ImageContainer response, boolean arg1) {
-				if (response.getBitmap() != null) {
-					// load image into imageview
-					imageView.setImageBitmap(response.getBitmap());
-				}
-			}
-		});*/
 
         // Loading image with placeholder and error image
         imageLoader.get(book.getPictureURL(), ImageLoader.getImageListener(
@@ -208,30 +197,46 @@ public class ContentActivity extends Activity {
                 finish();
                 return true;
             case R.id.action_donate:
-                for (int i=0; i<bookList.size(); i++)
+                if (isLogin())
                 {
-                    if (bookList.get(i).getIsbn()==book.getIsbn()) {
-                        book = bookList.get(i); //将当前bookList中的对象代替本次扫描的的书的对象
-                        isEnableAdd = false;
-                        book.setStock(+1);
-                        UpdateBook.updateBookStock(book);
-                        break;
+                    if (book != null) {
+                        currState = ContentActivity.STATE_DONATION;
+                        if (!isAdded) {
+                            findBook.findBookByIsbn(book.getIsbn());
+                            if (!isAdded) {
+                                createBook.addBook(book);
+                            }
+                        }else {
+                            ToastUtil.show("此书已经添加成功！");
+                        }
                     }
-                }
-                if (book != null && isEnableAdd) {
-                    book.setStock(1);
-                    CreateBook.addBook(book);
-                    isEnableAdd = true;
                 }
                 return true;
             case R.id.action_return:
-                if (book != null) {
+                if (isLogin())
+                {
+                    if (book != null) {
+                        currState = ContentActivity.STATE_SEENDBACK;
+                        if (!isSendBack) {
+                            findBook.findBookByIsbn(book.getIsbn());
+                            isSendBack = true;
 
+                        }else {
+                            ToastUtil.show("此书已经退还成功！");
+                        }
+                    }
                 }
                 return true;
             case R.id.action_borrow:
-                if (book != null) {
-
+                if (isLogin())
+                {
+                    if (book != null) {
+                        currState = ContentActivity.STATE_BORROWING;
+                        findBook.findBookByIsbn(book.getIsbn());
+                        /**保存当前借阅*/
+                        Relations relations = new Relations();
+                        relations.saveCurrentBorrow(book);
+                    }
                 }
                 return true;
             default:
@@ -267,4 +272,29 @@ public class ContentActivity extends Activity {
         }
     }
 
+    private boolean isLogin() {
+        User user = BmobUser.getCurrentUser(AppController.getInstance(), User.class);
+        if (TextUtils.isEmpty(user.getObjectId())) {
+            ToastUtil.show("Please Login!");
+            ///////////
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void update(int flag, List<Book> book) {
+        if (flag == FindBook.FIND_ITEM_SUCCESS) {
+            UpdateBook updateBook = new UpdateBook(this);
+            if (currState == ContentActivity.STATE_DONATION
+                    || currState == ContentActivity.STATE_SEENDBACK)
+            {
+                updateBook.updateBookStock(book.get(0), +1);
+            }
+            if (currState == ContentActivity.STATE_BORROWING){
+                updateBook.updateBookStock(book.get(0), -1);
+            }
+            isAdded = true;
+        }
+    }
 }

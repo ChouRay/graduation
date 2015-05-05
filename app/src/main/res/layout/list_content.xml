@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.izlei.shlibrary.demo.RefreshableView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/refreshable_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:visibility="visible">
+
+    <ListView
+        android:id="@+id/content_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/list_divider"
+        android:dividerHeight="1dp"
+        >
+
+    </ListView>
+</com.izlei.shlibrary.demo.RefreshableView>
+

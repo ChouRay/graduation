@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<item name="white" type="color">#FFFFFF</item>
+    <item name="black" type="color">#000000</item>
+    <item name="primary" type="color">#8BC34A</item>
+    <item name="primary_dark" type="color">#607D8B</item>
+    <item name="accent" type="color">#3E2723</item>
+    <item name="blue" type="color">#2196F3</item>
+    <item name="light_blue" type="color">#29B6F6</item>
     <color name="result_view">#b0000000</color>
     <color name="viewfinder_mask">#60000000</color>
     <color name="possible_result_points">#c0ffff00</color>
-
+    <color name="grey">#9E9E9E</color>
     <color name="genre">#666666</color>
     <color name="year">#888888</color>
     <color name="list_divider">#d9d9d9</color>
-    <color name="list_row_start_color">#ffffff</color>
-    <color name="list_row_end_color">#ffffff</color>
-    <color name="list_row_hover_start_color">#ebeef0</color>
-    <color name="list_row_hover_end_color">#ebeef0</color>
+    <color name="pink">#F48FB1</color>
+    <color name="brown">#8D6E63</color>
+    <color name="lime">#CDDC39</color>
+    <color name="green">#43A047</color>
+
+
+
 </resources>

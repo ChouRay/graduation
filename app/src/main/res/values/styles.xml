@@ -1,8 +1,25 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
     </style>
+
+    <color name="text_white">#ffffff</color>
+    <color name="text_background_margin">#5c8a8a</color>
+    <color name="background_pink">#ff9999</color>
+    <color name="background_pink_pressed">#ff7b7b</color>
+    <color name="background_green">#99cc99</color>
+    <color name="background_green_pressed">#65be65</color>
+    <color name="background_green_margin">#8ab88a</color>
+    <color name="background_brown">#cc9999</color>
+    <color name="background_brown_pressed">#cb7b7b</color>
+    <color name="background_brown_margin">#b88a8a</color>
+    <style name="Button_Operator" parent="android:Widget.Holo.Light.Button">
+        <item name="android:background">#669999</item>
+        <item name="android:textColor">@color/text_white</item>
+        <item name="android:layout_margin">@dimen/margin_medium</item>
+    </style>
+    
 
 </resources>

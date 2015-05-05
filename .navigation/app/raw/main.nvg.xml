@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<navigationModel
+  ns = "http://schemas.android.com?import=com.android.tools.idea.editors.navigation.model.*">
+  <locations  
+    class = "java.util.ArrayList">
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.izlei.shlibrary.ContentActivity"/>
+      <point      
+        x = "2768"      
+        y = "196"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.izlei.shlibrary.demo.Login"/>
+      <point      
+        x = "2552"      
+        y = "1564"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.MenuState"      
+        className = "com.izlei.shlibrary.demo.activity.MainActivity"/>
+      <point      
+        x = "1784"      
+        y = "136"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.izlei.shlibrary.demo.activity.MainActivity"/>
+      <point      
+        x = "500"      
+        y = "100"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.izlei.shlibrary.test.SignUp"/>
+      <point      
+        x = "1044"      
+        y = "1592"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.izlei.shlibrary.MipcaActivityCapture"/>
+      <point      
+        x = "1748"      
+        y = "128"/>
+    </statePointEntry>
+  </locations>
+</navigationModel>

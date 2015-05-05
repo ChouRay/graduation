@@ -1,6 +1,9 @@
 package com.izlei.shlibrary;
 
-import com.com.izlei.app.AppController;
+import android.content.Context;
+
+import com.izlei.shlibrary.app.AppController;
+import com.izlei.shlibrary.bean.Book;
 import com.izlei.shlibrary.utils.ToastUtil;
 
 import cn.bmob.v3.listener.UpdateListener;
@@ -9,10 +12,14 @@ import cn.bmob.v3.listener.UpdateListener;
  * Created by zhouzili on 2015/3/27.
  */
 public class UpdateBook {
+    private Context context;
+    public UpdateBook(Context context) {
+        this.context = context;
+    }
 
-    public static void updateBookStock(final Book book) {
-
-        book.update(AppController.getInstance(), book.getObjectId(),new UpdateListener() {
+    public  void updateBookStock(Book book, int num) {
+        book.setStock(book.getStock() + num);
+        book.update(context, book.getObjectId(),new UpdateListener() {
             @Override
             public void onSuccess() {
                 ToastUtil.show("操作成功");
@@ -20,7 +27,7 @@ public class UpdateBook {
 
             @Override
             public void onFailure(int i, String s) {
-                ToastUtil.show("操作失败！"+s);
+                ToastUtil.show("操作失败！s=="+s);
             }
         });
     }

@@ -29,10 +29,10 @@ import android.util.Log;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
+import com.izlei.shlibrary.demo.activity.MyCaptureActivity;
 import com.mining.app.zxing.camera.CameraManager;
 import com.mining.app.zxing.view.ViewfinderResultPointCallback;
 
-import com.izlei.shlibrary.MipcaActivityCapture;
 import com.izlei.shlibrary.R;
 
 /**
@@ -42,7 +42,7 @@ public final class CaptureActivityHandler extends Handler {
 
   private static final String TAG = CaptureActivityHandler.class.getSimpleName();
 
-  private final MipcaActivityCapture activity;
+  private final MyCaptureActivity activity;
   private final DecodeThread decodeThread;
   private State state;
 
@@ -52,7 +52,7 @@ public final class CaptureActivityHandler extends Handler {
     DONE
   }
 
-  public CaptureActivityHandler(MipcaActivityCapture activity, Vector<BarcodeFormat> decodeFormats,
+  public CaptureActivityHandler(MyCaptureActivity activity, Vector<BarcodeFormat> decodeFormats,
       String characterSet) {
     this.activity = activity;
     decodeThread = new DecodeThread(activity, decodeFormats, characterSet,

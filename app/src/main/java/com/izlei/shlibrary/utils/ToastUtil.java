@@ -2,7 +2,7 @@ package com.izlei.shlibrary.utils;
 
 import android.widget.Toast;
 
-import com.com.izlei.app.AppController;
+import com.izlei.shlibrary.app.AppController;
 
 /**
  * Created by zhouzili on 2015/3/27.

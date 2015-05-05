@@ -10,11 +10,9 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
-import com.com.izlei.app.AppController;
-import com.izlei.shlibrary.Book;
-import com.izlei.shlibrary.R;
+import com.izlei.shlibrary.app.AppController;
+import com.izlei.shlibrary.bean.Book;
 
-import java.net.NetworkInterface;
 import java.util.List;
 
 /**
@@ -27,9 +25,18 @@ public class CustomListAdapter extends BaseAdapter {
     private List<Book> bookItems;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
-    public CustomListAdapter(Activity activity, List<Book> bookItems) {
+    public CustomListAdapter(Activity activity,List<Book> bookItems) {
         this.activity = activity;
         this.bookItems = bookItems;
+    }
+
+    public void refresh(List<Book> items) {
+        this.bookItems = items;
+        notifyDataSetChanged();
+    }
+
+    public void addItem(Book item) {
+        bookItems.add(item);
     }
 
     @Override
@@ -67,7 +74,7 @@ public class CustomListAdapter extends BaseAdapter {
         thumbnail.setImageUrl(book.getPictureURL(), imageLoader);
         title.setText(book.getTitle());
         author.setText(book.getAuthor());
-        stock.setText("库存:"+String.valueOf(book.getStock()));
+        stock.setText(activity.getResources().getString(R.string.number)+String.valueOf(book.getStock()));
         return convertView;
     }
 }

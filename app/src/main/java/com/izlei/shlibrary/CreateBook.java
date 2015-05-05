@@ -1,9 +1,13 @@
 package com.izlei.shlibrary;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
-import com.com.izlei.app.AppController;
+import com.izlei.shlibrary.app.AppController;
+import com.izlei.shlibrary.bean.Book;
+
+import java.util.List;
 
 import cn.bmob.v3.listener.SaveListener;
 
@@ -12,19 +16,32 @@ import cn.bmob.v3.listener.SaveListener;
  */
 public class CreateBook {
 
-    public static void addBook(final Book book) {
-        book.save(AppController.getInstance(), new SaveListener() {
+    public static final String TAG = AppController.class
+            .getSimpleName();
+
+    private Context context;
+
+    public CreateBook(Context context) {
+        this.context = context;
+    }
+
+    public void addBook(final Book book) {
+        book.save(context, new SaveListener() {
             @Override
             public void onSuccess() {
                 // TODO Auto-generated method stub
-                Toast.makeText(AppController.getInstance(),"添加数据成功，返回objectId为：" + book.getObjectId(), Toast.LENGTH_SHORT).show();
+                Log.i(TAG, "添加数据成功，返回objectId为：" + book.getObjectId());
             }
 
             @Override
             public void onFailure(int code, String msg) {
                 // TODO Auto-generated method stub
-                Toast.makeText(AppController.getInstance(), "创建数据失败：" + msg, Toast.LENGTH_SHORT).show();
+                if (code != 401) {
+                    Toast.makeText(AppController.getInstance(), "创建数据失败："+"code== "+code + msg, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
+
+
 }

@@ -7,4 +7,10 @@
     <dimen name="author">15dip</dimen>
     <dimen name="stock">13dip</dimen>
     <dimen name="year">12dip</dimen>
+
+    <dimen name="corner_radius">4dp</dimen>
+    <dimen name="layer_padding">3dp</dimen>
+
+    <dimen name="margin_medium">8dip</dimen>
+    <dimen name="padding_medium">4dp</dimen>
 </resources>
