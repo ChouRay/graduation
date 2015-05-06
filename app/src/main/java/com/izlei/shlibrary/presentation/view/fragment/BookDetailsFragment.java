@@ -43,6 +43,9 @@ public class BookDetailsFragment extends BaseFragment implements BookDetailsView
     boolean isAuthorIntroExpended = false;
     boolean isCatalogExpended = false;
 
+    private BookModel bookModel;
+    private Context context;
+
     private BookDetailsPresenter bookDetailsPresenter;
 
     public static BookDetailsFragment newInstance() {
@@ -55,6 +58,7 @@ public class BookDetailsFragment extends BaseFragment implements BookDetailsView
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        context = activity;
         this.bookDetailsPresenter = new BookDetailsPresenter();
     }
 
@@ -83,7 +87,9 @@ public class BookDetailsFragment extends BaseFragment implements BookDetailsView
 
     @OnClick(R.id.button_donation)
     public void donate() {
-        ToastUtil.show("donation");
+        if (bookModel != null) {
+            this.bookDetailsPresenter.createBookIntoRepository(bookModel);
+        }
     }
     @OnClick(R.id.button_borrow)
     public void borrow() {
@@ -149,6 +155,7 @@ public class BookDetailsFragment extends BaseFragment implements BookDetailsView
 
     @Override
     public void renderBookDetails(BookModel bookModel) {
+        this.bookModel = bookModel;
         this.makeImageRequest(imageViewBook, bookModel.getImage());
         this.textViewTitle.setText(bookModel.getTitle());
         String author = "";
@@ -190,7 +197,7 @@ public class BookDetailsFragment extends BaseFragment implements BookDetailsView
 
     @Override
     public Context getContext() {
-        return null;
+        return this.context;
     }
 }
 

@@ -34,6 +34,4 @@ public interface BookRepository {
 
     void getBookDetails(String isbn, BookDetailsCallback bookDetailsCallback);
 
-
-
 }

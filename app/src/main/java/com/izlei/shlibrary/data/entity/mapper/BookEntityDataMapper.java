@@ -55,5 +55,36 @@ public class BookEntityDataMapper {
         return bookList;
     }
 
+    public BookEntity transform(Book book) {
+        BookEntity bookEntity = null;
+        if (book != null) {
+            bookEntity = new BookEntity();
+            bookEntity.setRating(book.getRating());
+            bookEntity.setSubtitle(book.getSubtitle());
+            bookEntity.setAuthor(book.getAuthor());
+            bookEntity.setPubdate(book.getPubdate());
+            bookEntity.setTags(book.getTags());
+            bookEntity.setOrigin_title(book.getOrigin_title());
+            bookEntity.setImage(book.getImage());
+            bookEntity.setBinding(book.getBinding());
+            bookEntity.setTranslator(book.getTranslator());
+            bookEntity.setCatalog(book.getCatalog());
+            bookEntity.setPages(book.getPages());
+            bookEntity.setImages(book.getImages());
+            bookEntity.setAlt(book.getAlt());
+            bookEntity.setId(book.getId());
+            bookEntity.setPublisher(book.getPublisher());
+            bookEntity.setIsbn10(book.getIsbn10());
+            bookEntity.setIsbn13(book.getIsbn13());
+            bookEntity.setTitle(book.getTitle());
+            bookEntity.setUrl(book.getUrl());
+            bookEntity.setAlt_title(book.getAlt_title());
+            bookEntity.setAuthor_intro(book.getAuthor_intro());
+            bookEntity.setSummary(book.getSummary());
+            bookEntity.setPrice(book.getPrice());
+        }
+        return bookEntity;
+    }
+
 
 }

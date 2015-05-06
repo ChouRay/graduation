@@ -98,7 +98,9 @@ public class CloudBookDataStore implements BookDataStore {
         }
         query.setLimit(100);
         query.order("-updatedAt");
-        query.addWhereGreaterThan("updatedAt", new BmobDate(date));
+        if (date != null) {
+            query.addWhereGreaterThan("updatedAt", new BmobDate(date));
+        }
         query.findObjects(AppController.getInstance(), new FindListener<BookEntity>() {
             @Override
             public void onSuccess(List<BookEntity> bookList) {

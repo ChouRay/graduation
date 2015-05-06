@@ -75,4 +75,38 @@ public class BookModelDataMapper {
         }
         return bookModelsList;
     }
+
+
+    public Book transform(BookModel bookModel) {
+        if (bookModel == null) {
+            throw new IllegalArgumentException("can not transform a null value");
+        }
+        Book book = new Book();
+
+        book.setRating(bookModel.getRating());
+        book.setSubtitle(bookModel.getSubtitle());
+        book.setAuthor(bookModel.getAuthor());
+        book.setPubdate(bookModel.getPubdate());
+        book.setTags(bookModel.getTags());
+        book.setOrigin_title(bookModel.getOrigin_title());
+        book.setImage(bookModel.getImage());
+        book.setBinding(bookModel.getBinding());
+        book.setTranslator(bookModel.getTranslator());
+        book.setCatalog(bookModel.getCatalog());
+        book.setPages(bookModel.getPages());
+        book.setImages(bookModel.getImages());
+        book.setAlt(bookModel.getAlt());
+        book.setId(bookModel.getId());
+        book.setPublisher(bookModel.getPublisher());
+        book.setIsbn10(bookModel.getIsbn10());
+        book.setIsbn13(bookModel.getIsbn13());
+        book.setTitle(bookModel.getTitle());
+        book.setUrl(bookModel.getUrl());
+        book.setAlt_title(bookModel.getAlt_title());
+        book.setAuthor_intro(bookModel.getAuthor_intro());
+        book.setSummary(bookModel.getSummary());
+        book.setPrice(bookModel.getPrice());
+
+        return book;
+    }
 }

@@ -1,10 +1,13 @@
 package com.izlei.shlibrary.presentation.presenter;
 
 
+import android.content.Context;
 import android.util.Log;
 
 import com.izlei.shlibrary.domain.Book;
 import com.izlei.shlibrary.domain.exception.ErrorBundle;
+import com.izlei.shlibrary.domain.interactor.Command;
+import com.izlei.shlibrary.domain.interactor.CreateBookCommand;
 import com.izlei.shlibrary.domain.interactor.GetBookDetailsUseCase;
 import com.izlei.shlibrary.domain.interactor.GetBookDetailsUseCaseImpl;
 import com.izlei.shlibrary.presentation.mapper.BookModelDataMapper;
@@ -21,6 +24,7 @@ public class BookDetailsPresenter implements Presenter {
     private final GetBookDetailsUseCase getBookDetailsUseCase;
     private final BookModelDataMapper bookModelDataMapper;
 
+    private Command createBookCommand;
 
     public BookDetailsPresenter() {
         getBookDetailsUseCase = new GetBookDetailsUseCaseImpl();
@@ -54,6 +58,14 @@ public class BookDetailsPresenter implements Presenter {
 
                 }
             };
+
+    public void createBookIntoRepository(BookModel bookModel) {
+        Book book = this.bookModelDataMapper.transform(bookModel);
+        if (createBookCommand == null) {
+            createBookCommand = new CreateBookCommand();
+        }
+        createBookCommand.execute(this.bookDetailsView.getContext(), book);
+    }
 
     @Override
     public void resume() {

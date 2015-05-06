@@ -32,7 +32,6 @@ public class BookDataRepository implements BookRepository{
         bookEntityDataMapper = new BookEntityDataMapper();
     }
 
-
     @Override
     public void getBookList(final BookListCallback bookListCallback, final int paramInt, int flag) {
         final BookDataStore bookDataStore = new CloudBookDataStore();       //*need to improve*/
