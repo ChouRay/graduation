@@ -27,9 +27,10 @@ import cn.bmob.v3.listener.FindListener;
  */
 public class CloudBookDataStore implements BookDataStore {
 
-    private SharedPreferences sharedPreferences  = AppController.getInstance().getSharedPreferences("updatedAt", Context.MODE_PRIVATE);
-    private SharedPreferences.Editor editor = sharedPreferences.edit();
+    private static SharedPreferences sharedPreferences  = AppController.getInstance().getSharedPreferences("updatedAt", Context.MODE_PRIVATE);
+    private static SharedPreferences.Editor editor = sharedPreferences.edit();
     private RestApi restApi;
+    private int lock = 0;
 
     public CloudBookDataStore(){
     }
@@ -40,21 +41,20 @@ public class CloudBookDataStore implements BookDataStore {
 
     @Override
     public void getBooksEntityList(final BookListCallback bookListCallback, int paramInt) {
-        BmobQuery<BookEntity> query = new BmobQuery<>();
-        query.setCachePolicy(BmobQuery.CachePolicy.CACHE_THEN_NETWORK);
+        final BmobQuery<BookEntity> query = new BmobQuery<>();
+        query.setCachePolicy(BmobQuery.CachePolicy.IGNORE_CACHE);
         query.setLimit(10);
         query.order("-updatedAt");
         query.findObjects(AppController.getInstance(), new FindListener<BookEntity>() {
             @Override
             public void onSuccess(List<BookEntity> bookList) {
                 bookListCallback.onBookListLoaded(bookList);
-                editor.putString("RECENT_UPDATED",  bookList.get(0).getUpdatedAt()).commit();
-                Log.e("***", ""+bookList.get(0).getUpdatedAt());
+                editor.putString("RECENT_UPDATED", bookList.get(0).getUpdatedAt()).commit();
             }
 
             @Override
             public void onError(int i, String s) {
-
+                Log.e("getBookserror",s);
             }
         });
     }
@@ -96,18 +96,18 @@ public class CloudBookDataStore implements BookDataStore {
         }catch (ParseException pe) {
             pe.printStackTrace();
         }
-        query.setLimit(100);
-        query.order("-updatedAt");
         if (date != null) {
             query.addWhereGreaterThan("updatedAt", new BmobDate(date));
         }
+        query.setLimit(100);
+        query.order("-updatedAt");
         query.findObjects(AppController.getInstance(), new FindListener<BookEntity>() {
             @Override
             public void onSuccess(List<BookEntity> bookList) {
-                if (bookList.size() >1) {
-                    bookList.remove(bookList.size()-1);
+                if (bookList.size() > 1) {
+                    bookList.remove(bookList.size() - 1);
                     bookListCallback.onBookListLoaded(bookList);
-                    editor.putString("RECENT_UPDATED",  bookList.get(0).getUpdatedAt()).commit();
+                    editor.putString("RECENT_UPDATED", bookList.get(0).getUpdatedAt()).commit();
                 }
             }
 
@@ -126,11 +126,11 @@ public class CloudBookDataStore implements BookDataStore {
     @Override
     public void getBookEntityDetails(final String isbn, final BookDetailsCallback bookDetailsCallback) {
 
-        this.restApi.getBookDetailByIsbn(isbn,new RestApi.BookDetailsCallback() {
+        this.restApi.getBookDetailByIsbn(isbn, new RestApi.BookDetailsCallback() {
             @Override
             public void onBookEntityLoaded(BookEntity bookEntity) {
                 bookDetailsCallback.onBookEntityLoaded(bookEntity);
-        }
+            }
 
             @Override
             public void onError(Exception e) {

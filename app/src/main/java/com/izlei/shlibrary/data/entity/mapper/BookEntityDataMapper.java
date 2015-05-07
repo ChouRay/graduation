@@ -38,6 +38,7 @@ public class BookEntityDataMapper {
             book.setAuthor_intro(bookEntity.getAuthor_intro());
             book.setSummary(bookEntity.getSummary());
             book.setPrice(bookEntity.getPrice());
+            book.setStock(bookEntity.getStock());
         }
         return book;
     }

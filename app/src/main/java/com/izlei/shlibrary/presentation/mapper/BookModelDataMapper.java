@@ -53,7 +53,7 @@ public class BookModelDataMapper {
         bookModel.setAuthor_intro(book.getAuthor_intro());
         bookModel.setSummary(book.getSummary());
         bookModel.setPrice(book.getPrice());
-
+        bookModel.setStock(book.getStock());
         return bookModel;
     }
 
@@ -106,7 +106,6 @@ public class BookModelDataMapper {
         book.setAuthor_intro(bookModel.getAuthor_intro());
         book.setSummary(bookModel.getSummary());
         book.setPrice(bookModel.getPrice());
-
         return book;
     }
 }

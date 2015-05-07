@@ -42,6 +42,8 @@
             android:screenOrientation="portrait"
             ></activity>
 
+        <service android:name=".data.service.BookSearchService"></service>
+
 
         <!--
         <activity
@@ -76,6 +78,9 @@
             android:name=".demo.activity.SignUpActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
+
+
+
     </application>
 
 </manifest>
