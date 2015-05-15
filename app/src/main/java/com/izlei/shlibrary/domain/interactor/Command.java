@@ -8,5 +8,5 @@ import com.izlei.shlibrary.domain.Book;
  * Created by zhouzili on 2015/5/6.
  */
 public interface Command extends Interactor{
-    void execute(Context context, Book book);
+    void execute(Context context, Object object);
 }

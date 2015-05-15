@@ -53,6 +53,7 @@ public class BookDetailsFragment extends BaseFragment implements BookDetailsView
     }
 
     public BookDetailsFragment() {
+        super();
     }
 
     @Override

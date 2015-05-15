@@ -26,21 +26,5 @@ public class Login {
     }
 
     public void login(final String name, final String password) {
-        final User user = new User();
-        user.setUsername(name);
-        user.setPassword(password);
-        user.login(AppController.getInstance(), new SaveListener() {
-            @Override
-            public void onSuccess() {
-                ToastUtil.show("login success!");
-                if (listener != null) {
-                    listener.onListenerMessage(user, Login.LOGIN_SUCCESS);
-                }
-            }
-            @Override
-            public void onFailure(int i, String s) {
-                ToastUtil.show("Login failure! " + s);
-            }
-        });
     }
 }

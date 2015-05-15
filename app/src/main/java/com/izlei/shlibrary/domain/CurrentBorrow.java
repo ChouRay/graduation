@@ -1,5 +1,7 @@
 package com.izlei.shlibrary.domain;
 
+import com.izlei.shlibrary.data.entity.UserEntity;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,12 +16,12 @@ public class CurrentBorrow extends BmobObject{
     String isbn;
     String borrowDate;
     String sendbackDate;
-    User user;
+    UserEntity user;
 
-    public void setUser(User user) {
+    public void setUser(UserEntity user) {
         this.user = user;
     }
-    public User getUser() {
+    public UserEntity getUser() {
         return this.user;
     }
 

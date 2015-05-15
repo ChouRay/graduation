@@ -1,0 +1,86 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.izlei.shlibrary.presentation.view.fragment.LoginActivityFragment">
+
+    <RelativeLayout
+        android:id="@+id/layout_logo_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="180dp"
+        android:background="@color/primary"
+        >
+        <TextView
+            android:id="@+id/app_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            android:text="SHLibrary"
+            android:textSize="40sp" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/edit_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_logo_tag"
+        android:layout_marginTop="60dp"
+        android:hint="username"
+        android:textColorHint="@color/grey" />
+
+    <EditText
+        android:id="@+id/edit_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_name"
+        android:layout_marginTop="20dp"
+        android:hint="password"
+        android:inputType="textPassword"
+        android:textColorHint="@color/grey" />
+
+    <Button
+        android:id="@+id/button_login"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_password"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_green"
+        android:text="登录" />
+
+    <RelativeLayout
+        android:id="@+id/relativelayout_signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_login">
+
+        <TextView
+            android:id="@+id/no_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="没有帐户？" />
+
+        <TextView
+            android:id="@+id/textView_sign_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/no_account"
+            android:text="注册"
+            android:textColor="@color/blue" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/button_login_sinaweibo"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativelayout_signup"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/button_green"
+        android:text="新浪微博登录" />
+
+</RelativeLayout>

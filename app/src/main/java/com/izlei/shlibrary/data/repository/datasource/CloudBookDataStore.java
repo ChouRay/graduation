@@ -8,10 +8,7 @@ import android.util.Log;
 
 import com.izlei.shlibrary.app.AppController;
 import com.izlei.shlibrary.data.entity.BookEntity;
-import com.izlei.shlibrary.data.entity.mapper.BookEntityDataMapper;
-import com.izlei.shlibrary.data.entity.mapper.BookEntityJsonMapper;
 import com.izlei.shlibrary.data.net.RestApi;
-import com.izlei.shlibrary.data.net.RestApiImpl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -104,10 +101,9 @@ public class CloudBookDataStore implements BookDataStore {
         query.findObjects(AppController.getInstance(), new FindListener<BookEntity>() {
             @Override
             public void onSuccess(List<BookEntity> bookList) {
-                if (bookList.size() > 1) {
-                    bookList.remove(bookList.size() - 1);
-                    bookListCallback.onBookListLoaded(bookList);
+                if (bookList.size() > 0) {
                     editor.putString("RECENT_UPDATED", bookList.get(0).getUpdatedAt()).commit();
+                    bookListCallback.onBookListLoaded(bookList);
                 }
             }
 

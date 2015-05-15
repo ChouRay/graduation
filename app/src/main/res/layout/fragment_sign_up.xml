@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:id="@+id/signup_layout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_signup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary">
-    </android.support.v7.widget.Toolbar>
 
     <TextView
         android:layout_width="match_parent"
@@ -27,7 +23,9 @@
     <EditText
         android:id="@+id/edit_password"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:password="true"
+        />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,15 +33,6 @@
         />
     <EditText
         android:id="@+id/edit_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="地址"
-        />
-    <EditText
-        android:id="@+id/edit_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

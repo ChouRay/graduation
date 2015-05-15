@@ -38,9 +38,7 @@ public class SetUpBookDataRepository implements SetUpBookRepository{
     @Override
     public void createBook(Context context, Book book) {
         if (!isAdded) {
-            findBookByIsbn(context, book.getIsbn13());
-            /////need to improve//////
-            saveBook(context, bookEntityDataMapper.transform(book));
+            findBookByIsbn(context, book);
             isAdded = true;
         }else {
             ToastUtil.show("Has Added!");
@@ -52,6 +50,7 @@ public class SetUpBookDataRepository implements SetUpBookRepository{
     }
 
     private void saveBook(final Context context, final BookEntity bookEntity) {
+        bookEntity.setStock(bookEntity.getStock() + 1);
         bookEntity.save(context, new SaveListener() {
             @Override
             public void onSuccess() {
@@ -66,13 +65,17 @@ public class SetUpBookDataRepository implements SetUpBookRepository{
         });
     }
 
-    private void findBookByIsbn(final Context context,String isbn) {
+    private void findBookByIsbn(final Context context,final Book book) {
         BmobQuery<BookEntity> query = new BmobQuery<>();
-        query.addWhereEqualTo("isbn13", isbn);
+        query.addWhereEqualTo("isbn13", book.getIsbn13());
         query.findObjects(context, new FindListener<BookEntity>() {
             @Override
-            public void onSuccess(List<BookEntity> books) {
-                updateBookStock(context, books.get(0));
+            public void onSuccess(List<BookEntity> bookEntities) {
+                if (bookEntities.size() != 0) {
+                    updateBookStock(context, bookEntities.get(0));
+                }else { //Not found this book in cloud then save book directly
+                    saveBook(context, bookEntityDataMapper.transform(book));
+                }
             }
 
             @Override

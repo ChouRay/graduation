@@ -1,16 +1,14 @@
-package com.izlei.shlibrary.domain;
+package com.izlei.shlibrary.presentation.model;
 
 import java.io.Serializable;
 
-import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobRelation;
 
 /**
- * Created by zhouzili on 2015/4/2.
+ * Created by zhouzili on 2015/5/7.
  */
-public class User{
-
+public class UserModel implements Serializable{
     String address;
     BmobFile avatar;
     BmobRelation currentBorrow;

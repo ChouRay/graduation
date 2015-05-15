@@ -5,6 +5,7 @@ import android.text.format.Time;
 import android.util.Log;
 
 import com.izlei.shlibrary.app.AppController;
+import com.izlei.shlibrary.data.entity.UserEntity;
 import com.izlei.shlibrary.domain.Book;
 import com.izlei.shlibrary.domain.CurrentBorrow;
 import com.izlei.shlibrary.domain.User;
@@ -25,11 +26,11 @@ import cn.bmob.v3.listener.UpdateListener;
  */
 public class Relations {
 
-    User user;
+    UserEntity user;
     CurrentBorrow currentBorrow;
 
     public Relations() {
-        user = BmobUser.getCurrentUser(AppController.getInstance(),User.class);
+        user = BmobUser.getCurrentUser(AppController.getInstance(),UserEntity.class);
         currentBorrow = new CurrentBorrow();
     }
     public void saveCurrentBorrow(Book book) {

@@ -15,11 +15,13 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.izlei.shlibrary.R;
+import com.izlei.shlibrary.presentation.model.UserModel;
 import com.izlei.shlibrary.presentation.navigation.Navigator;
+import com.izlei.shlibrary.presentation.presenter.GetUserPresenter;
 import com.izlei.shlibrary.presentation.view.fragment.BookListFragment;
-import com.izlei.shlibrary.demo.activity.MyCaptureActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,22 +35,26 @@ import butterknife.OnClick;
  * Created by zhouzili on 2015/4/24.
  */
 public class MainActivity extends BaseActivity{
-    /*导航首页代码*/
-    public final static int NAV_FIRST_CODE = 0;
 
-    /*扫描请求代码*/
+    public final static int NAV_FIRST_CODE = 0;
     public final static int SCANNING_REQUEST_CODE = 5;
+    public final static int LOGIN_REQUEST_CODE = 6;
 
     @InjectView(R.id.toolbar) Toolbar toolbar;
     @InjectView(R.id.drawer_layout) DrawerLayout drawerLayout;
     @InjectView(R.id.left_drawer_list) ListView drawerList;
     @InjectView(R.id.drawer_framelayout) FrameLayout drawerFrameLayout;
+    @InjectView(R.id.avatar_text)
+    TextView avatarName;
     private String[] navTitles;
     private ActionBarDrawerToggle drawerToggle;
     private CharSequence drawerTitle;
     private CharSequence title;
-
     private Navigator navigator;
+
+    private UserModel userModel;
+    private GetUserPresenter getUserPresenter;
+    private boolean isLogin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +63,16 @@ public class MainActivity extends BaseActivity{
         ButterKnife.inject(this);
         setSupportActionBar(toolbar);
         title = drawerTitle = getTitle();
+        if (getUserPresenter == null) {
+            getUserPresenter = new GetUserPresenter();
+        }
+        this.loadCurrentUser();
         this.initDrawerLayout();
         if (savedInstanceState == null) {
             selectItem(MainActivity.NAV_FIRST_CODE);
+        }
+        if (navigator == null) {
+            navigator = new Navigator();
         }
     }
 
@@ -157,7 +170,13 @@ public class MainActivity extends BaseActivity{
      */
     @OnClick(R.id.avatar_layout)
     public void onClick() {
-        
+        if (!hasLogin()) {
+            Intent intent = new Intent();
+            intent.setClass(MainActivity.this, LoginActivity.class);
+            startActivityForResult(intent, LOGIN_REQUEST_CODE);
+        }else{
+            navigator.navigationToPersonal(this);
+        }
     }
 
     /**
@@ -178,7 +197,6 @@ public class MainActivity extends BaseActivity{
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         drawerToggle.syncState();
-
     }
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -220,22 +238,46 @@ public class MainActivity extends BaseActivity{
         }
     }
 
+    public void refresh() {
+        loadCurrentUser();
+    }
+
+    private void loadCurrentUser() {
+        getUserPresenter.getCurrentUser(this);
+        getUserPresenter.setUserPresenterCallback(new GetUserPresenter.GetUserPresenterCallback() {
+            @Override
+            public void getCurrentUser(UserModel userModel) {
+                if (userModel != null) {
+                    avatarName.setText(userModel.getUsername());
+                    MainActivity.this.isLogin = true;
+                }
+            }
+            @Override
+            public void getRelationUsers(List<UserModel> userModels) {
+
+            }
+        });
+    }
+
+    private boolean hasLogin() {
+        return isLogin;
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode,Intent data) {
-
-        if (resultCode == MyCaptureActivity.SCANED_SUCCESS_CODE) {
-            String result = null;
-            if (data != null) {
-                result = data.getExtras().getString("result");
-            }
-            if (result != null) {
-                if (navigator == null) {
-                    navigator = new Navigator();
+        switch (resultCode) {
+            case MyCaptureActivity.SCANED_SUCCESS_CODE:
+                String result = null;
+                if (data != null) {
+                    result = data.getExtras().getString("result");
                 }
                 navigator.navigationToBookDetails(MainActivity.this,result);
-            }
+                break;
+            case LoginActivity.LOGIN_OR_SIGNUP_SUCCESS:
+                refresh();
+                break;
         }
-
     }
 
 }

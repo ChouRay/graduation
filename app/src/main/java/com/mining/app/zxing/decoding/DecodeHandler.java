@@ -23,7 +23,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
-import com.izlei.shlibrary.demo.activity.MyCaptureActivity;
+import com.izlei.shlibrary.presentation.view.activity.MyCaptureActivity;
 import com.izlei.shlibrary.R;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;

@@ -9,7 +9,7 @@ import com.izlei.shlibrary.domain.Book;
  */
 public class UpdateBookCommand implements Command {
     @Override
-    public void execute(Context context, Book book) {
+    public void execute(Context context, Object book) {
 
     }
 

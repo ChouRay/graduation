@@ -2,10 +2,11 @@ package com.izlei.shlibrary.presentation.navigation;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 
 import com.izlei.shlibrary.presentation.view.activity.BookDetailsActivity;
 import com.izlei.shlibrary.presentation.view.activity.BookListActivity;
+import com.izlei.shlibrary.presentation.view.activity.LoginActivity;
+import com.izlei.shlibrary.presentation.view.activity.PersonalActivity;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -35,6 +36,20 @@ public class Navigator {
             Intent intentToLaunch = BookDetailsActivity.getCallingIntent(context);
             intentToLaunch.putExtra("ISBN", isbn);
             context.startActivity(intentToLaunch);
+        }
+    }
+
+    public void navigationToLogin(Context context) {
+        if (context != null) {
+            Intent intent = LoginActivity.getCallingIntent(context);
+            context.startActivity(intent);
+        }
+    }
+
+    public void navigationToPersonal(Context context) {
+        if (context != null ) {
+            Intent intent = PersonalActivity.getCallingIntent(context);
+            context.startActivity(intent);
         }
     }
 }

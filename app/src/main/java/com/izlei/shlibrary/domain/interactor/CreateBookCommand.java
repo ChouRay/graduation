@@ -19,8 +19,8 @@ public class CreateBookCommand  implements Command{
     }
 
     @Override
-    public void execute(Context context, Book book) {
-        setUpBookRepository.createBook(context, book);
+    public void execute(Context context, Object object) {
+        setUpBookRepository.createBook(context, (Book)object);
     }
 
     @Override

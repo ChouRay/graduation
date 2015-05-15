@@ -23,7 +23,7 @@ import java.util.concurrent.CountDownLatch;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.izlei.shlibrary.demo.activity.MyCaptureActivity;
+import com.izlei.shlibrary.presentation.view.activity.MyCaptureActivity;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.ResultPointCallback;

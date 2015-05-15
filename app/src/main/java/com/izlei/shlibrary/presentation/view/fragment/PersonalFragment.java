@@ -1,4 +1,4 @@
-package com.izlei.shlibrary.demo.fragment;
+package com.izlei.shlibrary.presentation.view.fragment;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -15,7 +15,7 @@ import com.izlei.shlibrary.app.AppController;
 import com.izlei.shlibrary.domain.CurrentBorrow;
 import com.izlei.shlibrary.domain.User;
 import com.izlei.shlibrary.demo.FindBook;
-import com.izlei.shlibrary.demo.activity.PersonalActivity;
+import com.izlei.shlibrary.presentation.view.activity.PersonalActivity;
 
 import java.util.List;
 

@@ -27,7 +27,6 @@ public class BookDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_details);
         toolbar = (Toolbar) findViewById(R.id.toolbar_book_details);
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_logo));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getResources().getString(R.string.details));

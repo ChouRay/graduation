@@ -1,4 +1,4 @@
-package com.izlei.shlibrary.demo.activity;
+package com.izlei.shlibrary.presentation.view.activity;
 
 import java.io.IOException;
 import java.util.Vector;

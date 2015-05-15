@@ -32,11 +32,13 @@ android {
 
 dependencies {
     compile files('libs/volley.jar')
-    compile 'com.android.support:recyclerview-v7:22.0.0'
     compile files('libs/butterknife-6.1.0.jar')
     compile files('libs/javax-inject.jar')
     compile files('libs/Bmob_Push_V0.6beta_20150408.jar')
     compile files('libs/BmobSDK_V3.3.5_0408.jar')
     compile files('libs/gson-2.2.4.jar')
     compile files('libs/gson-2.2.4-sources.jar')
+    compile 'com.android.support:recyclerview-v7:22.0.0'
+    compile 'com.google.android.gms:play-services:6.5.87'
+    compile 'com.android.support:appcompat-v7:22.0.0'
 }

@@ -1,8 +1,6 @@
 package com.izlei.shlibrary.data.repository;
 
 
-import android.util.Log;
-
 import com.izlei.shlibrary.app.AppController;
 import com.izlei.shlibrary.data.entity.BookEntity;
 import com.izlei.shlibrary.data.entity.mapper.BookEntityDataMapper;

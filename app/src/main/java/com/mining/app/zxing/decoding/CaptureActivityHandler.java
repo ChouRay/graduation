@@ -29,7 +29,7 @@ import android.util.Log;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
-import com.izlei.shlibrary.demo.activity.MyCaptureActivity;
+import com.izlei.shlibrary.presentation.view.activity.MyCaptureActivity;
 import com.mining.app.zxing.camera.CameraManager;
 import com.mining.app.zxing.view.ViewfinderResultPointCallback;
 

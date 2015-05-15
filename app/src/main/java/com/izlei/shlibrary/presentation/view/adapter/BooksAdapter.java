@@ -57,9 +57,8 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
     public void onBindViewHolder(BookViewHolder bookViewHolder, int i) {
         final BookModel bookModel = this.bookModelList.get(i);
 
-        this.makeImageRequest(bookViewHolder.thumbnail, bookModel.getImage());
+        this.makeImageRequest(bookViewHolder, bookModel.getImage());
         bookViewHolder.title.setText(bookModel.getTitle());
-
         String author = "";
         for (int j=0; j<bookModel.getAuthor().size(); j++) {
             author += bookModel.getAuthor().get(j) + " ";
@@ -77,23 +76,24 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
         });
     }
 
-    private void makeImageRequest(ImageView imageView,String url) {
-        // Loading image with placeholder and error image
-        imageLoader.get(url, ImageLoader.getImageListener(imageView
-                , R.drawable.ico_loading, R.drawable.ico_error));
-
+    private void makeImageRequest(BookViewHolder bookViewHolder,String url) {
         Cache cache = AppController.getInstance().getRequestQueue().getCache();
         Cache.Entry entry = cache.get(url);
         if(entry != null){
             try {
-                String data = new String(entry.data, "UTF-8");
                 // handle data, like converting it to xml, json, bitmap etc.,
-            } catch (UnsupportedEncodingException e) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(entry.data,0,entry.data.length);
+                bookViewHolder.thumbnail.setImageBitmap(bitmap);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }else{
+            // Loading image with placeholder and error image
+            imageLoader.get(url, ImageLoader.getImageListener(bookViewHolder.thumbnail
+                    , R.drawable.ico_loading, R.drawable.ico_error));
+
             // cached response doesn't exists. Make a network call here
-            Log.e(getClass().getSimpleName(), " cached response doesn't exists. Make a network call here");
+            //Log.e(getClass().getSimpleName(), " cached response doesn't exists. Make a network call here");
         }
     }
 

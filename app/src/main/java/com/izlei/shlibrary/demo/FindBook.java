@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Looper;
 import android.os.Message;
 
-import com.izlei.shlibrary.demo.activity.PersonalActivity;
+import com.izlei.shlibrary.presentation.view.activity.PersonalActivity;
 import com.izlei.shlibrary.domain.Book;
 import com.izlei.shlibrary.domain.CurrentBorrow;
 import com.izlei.shlibrary.domain.User;

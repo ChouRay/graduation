@@ -7,7 +7,7 @@
         android:id="@+id/img_book_thumbnail"
         android:layout_width="100dp"
         android:layout_height="110dp"
-        android:background="@drawable/ico_loading" />
+         />
 
     <TextView
         android:id="@+id/tv_book_title"

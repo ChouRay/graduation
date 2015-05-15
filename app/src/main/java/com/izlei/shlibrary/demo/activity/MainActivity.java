@@ -37,6 +37,8 @@ import com.izlei.shlibrary.domain.User;
 import com.izlei.shlibrary.demo.impl.IMyListener;
 import com.izlei.shlibrary.demo.Login;
 import com.izlei.shlibrary.demo.fragment.ContentFragment;
+import com.izlei.shlibrary.presentation.view.activity.MyCaptureActivity;
+import com.izlei.shlibrary.presentation.view.activity.PersonalActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;

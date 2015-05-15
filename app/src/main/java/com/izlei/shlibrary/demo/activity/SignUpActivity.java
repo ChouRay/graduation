@@ -3,7 +3,6 @@ package com.izlei.shlibrary.demo.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.method.PasswordTransformationMethod;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,7 +11,7 @@ import android.widget.EditText;
 
 import com.izlei.shlibrary.R;
 import com.izlei.shlibrary.app.AppController;
-import com.izlei.shlibrary.domain.User;
+import com.izlei.shlibrary.data.entity.UserEntity;
 import com.izlei.shlibrary.utils.ToastUtil;
 
 import cn.bmob.v3.BmobUser;
@@ -28,22 +27,18 @@ public class SignUpActivity extends ActionBarActivity{
     EditText editName;
     EditText editPassword;
     EditText editEmail;
-    EditText editAddress;
     Button button;
 
     @Override
     protected void onCreate(Bundle  savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sign_up);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_signup);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setContentView(R.layout.fragment_sign_up);
+
         setTitle(getResources().getString(R.string.sign_up));
 
         editName = (EditText) findViewById(R.id.edit_name);
         editPassword = (EditText) findViewById(R.id.edit_password);
         editEmail = (EditText) findViewById(R.id.edit_email);
-        editAddress = (EditText) findViewById(R.id.edit_address);
         editPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
         button = (Button) findViewById(R.id.button_ok);
 
@@ -51,17 +46,16 @@ public class SignUpActivity extends ActionBarActivity{
             @Override
             public void onClick(View v) {
                 signUp(editName.getText().toString(), editPassword.getText().toString(),
-                        editEmail.getText().toString(), editAddress.getText().toString());
+                        editEmail.getText().toString());
             }
         });
     }
 
-    public void signUp(final String name,final String psd, final String email,final String address) {
-        final User user = new User();
+    public void signUp(final String name,final String psd, final String email) {
+        final UserEntity user = new UserEntity();
         user.setUsername(name);
         user.setPassword(psd);
         user.setEmail(email);
-        user.setAdress(address);
         user.signUp(AppController.getInstance(),new SaveListener() {
             @Override
             public void onSuccess() {
@@ -71,7 +65,6 @@ public class SignUpActivity extends ActionBarActivity{
                 SignUpActivity.this.setResult(SIGNUP_SUCCESS_CODE, resultIntent);
                 SignUpActivity.this.finish();
                 //verifyEmail(email);
-
             }
 
             @Override

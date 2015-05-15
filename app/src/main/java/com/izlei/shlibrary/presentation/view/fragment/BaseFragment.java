@@ -22,4 +22,5 @@ public abstract class BaseFragment extends Fragment {
     protected void showToastMessage(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
+
 }
