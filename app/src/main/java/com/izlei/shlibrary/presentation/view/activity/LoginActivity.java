@@ -8,7 +8,7 @@ import android.view.MenuItem;
 
 import com.izlei.shlibrary.R;
 import com.izlei.shlibrary.presentation.view.fragment.LoginActivityFragment;
-import com.izlei.shlibrary.presentation.view.fragment.UIRefresh;
+import com.izlei.shlibrary.presentation.view.UIRefresh;
 
 public class LoginActivity extends BaseActivity implements UIRefresh{
 

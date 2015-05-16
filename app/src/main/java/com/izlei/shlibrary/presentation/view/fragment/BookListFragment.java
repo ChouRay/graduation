@@ -2,6 +2,7 @@ package com.izlei.shlibrary.presentation.view.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import com.izlei.shlibrary.R;
 import com.izlei.shlibrary.domain.Book;
 import com.izlei.shlibrary.presentation.model.BookModel;
+import com.izlei.shlibrary.presentation.navigation.Navigator;
 import com.izlei.shlibrary.presentation.presenter.BookListPresenter;
 import com.izlei.shlibrary.presentation.view.BookListView;
 import com.izlei.shlibrary.presentation.view.adapter.BookLayoutManager;
@@ -259,10 +261,12 @@ public class BookListFragment extends BaseFragment implements BookListView {
             new BooksAdapter.OnItemClickListener() {
                 @Override
                 public void onBookItemClickListener(BookModel bookModel) {
-                    if (BookListFragment.this.bookListPresenter != null &&
+                    Navigator navigator =new Navigator();
+                    navigator.navigationToBookDetails(getActivity(), bookModel.getIsbn13());
+                   /* if (BookListFragment.this.bookListPresenter != null &&
                             bookModel != null) {
                         BookListFragment.this.bookListPresenter.onBookClicked(bookModel);
-                    }
+                    }*/
                 }
             };
 

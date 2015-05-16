@@ -9,12 +9,12 @@ import com.izlei.shlibrary.domain.repository.SetUpBookRepository;
 /**
  * Created by zhouzili on 2015/5/6.
  */
-public class CreateBookCommand  implements Command{
+public class DonateBookCommand implements Command{
 
     private final SetUpBookRepository setUpBookRepository;
 
 
-    public CreateBookCommand() {
+    public DonateBookCommand() {
         setUpBookRepository = new SetUpBookDataRepository();
     }
 

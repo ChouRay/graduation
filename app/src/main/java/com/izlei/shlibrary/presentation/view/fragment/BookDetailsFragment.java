@@ -2,6 +2,8 @@ package com.izlei.shlibrary.presentation.view.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -94,11 +96,16 @@ public class BookDetailsFragment extends BaseFragment implements BookDetailsView
     }
     @OnClick(R.id.button_borrow)
     public void borrow() {
+        if (bookModel != null) {
+           this.bookDetailsPresenter.borrowBookFromRepository(bookModel);
+        }
 
     }
     @OnClick(R.id.button_sendBack)
     public void sendBack() {
-
+        if (bookModel != null) {
+            this.bookDetailsPresenter.sendBackBookToRepository(bookModel);
+        }
     }
 
 
@@ -135,22 +142,20 @@ public class BookDetailsFragment extends BaseFragment implements BookDetailsView
 
 
     private void makeImageRequest(ImageView imageView,String url) {
-        // Loading image with placeholder and error image
-        AppController.getInstance().getImageLoader().get(url, ImageLoader.getImageListener(imageView
-                , R.drawable.ico_loading, R.drawable.ico_error));
-
         Cache cache = AppController.getInstance().getRequestQueue().getCache();
         Cache.Entry entry = cache.get(url);
         if(entry != null){
             try {
-                String data = new String(entry.data, "UTF-8");
+                Bitmap bitmap = BitmapFactory.decodeByteArray(entry.data, 0, entry.data.length);
+                imageView.setImageBitmap(bitmap);
                 // handle data, like converting it to xml, json, bitmap etc.,
-            } catch (UnsupportedEncodingException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }else{
-            // cached response doesn't exists. Make a network call here
-            Log.e(getClass().getSimpleName(), " cached response doesn't exists. Make a network call here");
+            // Loading image with placeholder and error image
+            AppController.getInstance().getImageLoader().get(url, ImageLoader.getImageListener(imageView
+                    , R.drawable.ico_loading, R.drawable.ico_error));
         }
     }
 

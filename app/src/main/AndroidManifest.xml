@@ -49,7 +49,6 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
 
-        <service android:name=".data.service.BookSearchService" />
 
         <!--
         <activity
@@ -84,11 +83,7 @@
             android:name=".demo.activity.SignUpActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
+
 
         <meta-data
             android:name="com.google.android.gms.version"

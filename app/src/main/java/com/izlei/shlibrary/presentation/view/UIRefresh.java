@@ -1,4 +1,4 @@
-package com.izlei.shlibrary.presentation.view.fragment;
+package com.izlei.shlibrary.presentation.view;
 
 import com.izlei.shlibrary.presentation.model.UserModel;
 

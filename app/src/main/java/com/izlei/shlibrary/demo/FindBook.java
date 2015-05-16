@@ -6,7 +6,7 @@ import android.os.Message;
 
 import com.izlei.shlibrary.presentation.view.activity.PersonalActivity;
 import com.izlei.shlibrary.domain.Book;
-import com.izlei.shlibrary.domain.CurrentBorrow;
+import com.izlei.shlibrary.data.entity.CurrentBorrow;
 import com.izlei.shlibrary.domain.User;
 import com.izlei.shlibrary.utils.ToastUtil;
 

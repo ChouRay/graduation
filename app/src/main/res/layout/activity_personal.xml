@@ -8,67 +8,11 @@
         android:id="@+id/toolbar_personal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_blue"></android.support.v7.widget.Toolbar>
-
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:background="@color/white">
-
-        <ImageView
-            android:id="@+id/avatar_image"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="2dp"
-            android:background="@mipmap/ic_action_action_face" />
-
-        <TextView
-            android:id="@+id/username_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/avatar_image"
-            android:paddingEnd="40dp"
-            android:paddingStart="10dp"
-            android:paddingTop="50dp"
-            android:text="周雷" />
-
-        <TextView
-            android:id="@+id/useraddress_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/username_text"
-            android:layout_toEndOf="@+id/avatar_image"
-            android:paddingEnd="5dp"
-            android:paddingStart="10dp"
-            android:paddingTop="10dp"
-            android:text="辽宁省·大连市·大连名族大学" />
-    </RelativeLayout>
-
-    <include layout="@layout/personal_current_borrow"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="40dp"
-        />
-
-    <include layout="@layout/personal_borrow_history"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        />
-
-    <include layout="@layout/personal_donation_history"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        />
+        android:background="@color/light_blue"/>
 
     <FrameLayout
-        android:id="@+id/personal_detail_framelayout"
+        android:id="@+id/personal_details"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        </FrameLayout>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

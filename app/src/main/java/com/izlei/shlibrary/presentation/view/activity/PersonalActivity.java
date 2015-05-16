@@ -7,14 +7,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
+
+import com.izlei.shlibrary.presentation.model.UserModel;
 import com.izlei.shlibrary.presentation.view.fragment.PersonalFragment;
 import com.izlei.shlibrary.R;
-import com.izlei.shlibrary.app.AppController;
-import com.izlei.shlibrary.domain.User;
 
 import cn.bmob.v3.BmobUser;
 
@@ -23,10 +20,8 @@ import cn.bmob.v3.BmobUser;
  */
 public class PersonalActivity extends BaseActivity{
 
-    public static final int LOGOUT_RESULT_CODE = 12;
+    public static final int LOGOUT_RESULT_CODE = MainActivity.PERSONAL_REQUEST_CODE;
     public static final int CURRENT_BORROWED = 20;
-    public static final int  HISTORY_BORROWED = 21;
-    public static final int HISTORY_DONATION = 22;
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, PersonalActivity.class);
@@ -40,27 +35,14 @@ public class PersonalActivity extends BaseActivity{
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.personal);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        final User user = BmobUser.getCurrentUser(AppController.getInstance(), User.class);
-        TextView nameText = (TextView) findViewById(R.id.username_text);
-        TextView addressText = (TextView) findViewById(R.id.useraddress_text);
-        if (user != null) {
-            nameText.setText(user.getUsername());
-            addressText.setText(user.getAddress());
+        UserModel userModel = (UserModel) getIntent().getSerializableExtra("USERMODEL");
+        if (savedInstanceState == null) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("USERMODEL", userModel);
+            PersonalFragment personalFragment = PersonalFragment.newInstance();
+            personalFragment.setArguments(bundle);
+            this.addFragment(R.id.personal_details, personalFragment);
         }
-
-        LinearLayout currBorrowLayout = (LinearLayout) findViewById(R.id.current_borrow_layout);
-        currBorrowLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PersonalFragment fragment = new PersonalFragment();
-                Bundle args = new Bundle();
-                args.putInt(PersonalFragment.ARG_SELECTION_NUMBER, PersonalActivity.CURRENT_BORROWED);
-                fragment.setArguments(args);
-                getFragmentManager().beginTransaction().replace(R.id.personal_detail_framelayout, fragment).commit();
-
-            }
-        });
     }
 
     @Override
@@ -79,6 +61,7 @@ public class PersonalActivity extends BaseActivity{
         }
         if (id == R.id.log_out) {
             BmobUser.logOut(this);   //清除缓存用户对象
+            setResult(LOGOUT_RESULT_CODE);
             finish();
             return true;
         }

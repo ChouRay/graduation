@@ -2,7 +2,9 @@ package com.izlei.shlibrary.presentation.navigation;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 
+import com.izlei.shlibrary.presentation.model.UserModel;
 import com.izlei.shlibrary.presentation.view.activity.BookDetailsActivity;
 import com.izlei.shlibrary.presentation.view.activity.BookListActivity;
 import com.izlei.shlibrary.presentation.view.activity.LoginActivity;
@@ -46,9 +48,12 @@ public class Navigator {
         }
     }
 
-    public void navigationToPersonal(Context context) {
+    public void navigationToPersonal(Context context, UserModel userModel) {
         if (context != null ) {
             Intent intent = PersonalActivity.getCallingIntent(context);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("USERMODEL", userModel);
+            intent.putExtras(bundle);
             context.startActivity(intent);
         }
     }

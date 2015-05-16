@@ -1,6 +1,5 @@
 package com.izlei.shlibrary.presentation.mapper;
 
-import com.izlei.shlibrary.data.entity.UserEntity;
 import com.izlei.shlibrary.domain.User;
 import com.izlei.shlibrary.presentation.model.UserModel;
 
@@ -16,6 +15,7 @@ public class UserModelDataMapper {
         if (user != null) {
             userModel = new UserModel();
             userModel.setUsername(user.getUsername());
+            userModel.setEmail(user.getEmail());
         }
         return userModel;
     }

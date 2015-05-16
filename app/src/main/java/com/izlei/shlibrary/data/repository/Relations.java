@@ -1,14 +1,13 @@
-package com.izlei.shlibrary.demo;
+package com.izlei.shlibrary.data.repository;
 
 import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.Log;
 
 import com.izlei.shlibrary.app.AppController;
+import com.izlei.shlibrary.data.entity.BookEntity;
+import com.izlei.shlibrary.data.entity.CurrentBorrow;
 import com.izlei.shlibrary.data.entity.UserEntity;
-import com.izlei.shlibrary.domain.Book;
-import com.izlei.shlibrary.domain.CurrentBorrow;
-import com.izlei.shlibrary.domain.User;
 import com.izlei.shlibrary.utils.ToastUtil;
 
 import java.util.List;
@@ -25,15 +24,16 @@ import cn.bmob.v3.listener.UpdateListener;
  * Created by zhouzili on 2015/4/3.
  */
 public class Relations {
-
     UserEntity user;
     CurrentBorrow currentBorrow;
 
     public Relations() {
-        user = BmobUser.getCurrentUser(AppController.getInstance(),UserEntity.class);
-        currentBorrow = new CurrentBorrow();
+        this.user = BmobUser.getCurrentUser(AppController.getInstance(), UserEntity.class);
     }
-    public void saveCurrentBorrow(Book book) {
+    public Relations(UserEntity user) {
+        this.user = user;
+    }
+    public void saveCurrentBorrow(BookEntity book) {
         if (TextUtils.isEmpty(user.getObjectId())) {
             ToastUtil.show("Current User is Null!");
             return;
@@ -45,29 +45,30 @@ public class Relations {
         currentBorrow.setIsbn(book.getIsbn13());
         currentBorrow.setBorrowDate(System.currentTimeMillis());
         currentBorrow.setSendbackDate(System.currentTimeMillis(), 30);  //return the book date for 30 days
-        currentBorrow.setUser(user);
-        currentBorrow.save(AppController.getInstance(),new SaveListener() {
+
+        currentBorrow.setUserEntity(user);
+        currentBorrow.save(AppController.getInstance(), new SaveListener() {
             @Override
             public void onSuccess() {
-                ToastUtil.show("save current_borrow success!");
+                Log.e(Relations.class.getSimpleName(), "save current_borrow success!");
                 addCurrentBorrowToUser();
             }
 
             @Override
             public void onFailure(int i, String s) {
-                ToastUtil.show("save current_borrow failure!"+s);
+                Log.e(Relations.class.getSimpleName(), "save current_borrow failure! " + s);
             }
         });
     }
 
     private void addCurrentBorrowToUser() {
         if (TextUtils.isEmpty(user.getObjectId()) || TextUtils.isEmpty(currentBorrow.getObjectId())) {
-            ToastUtil.show("current user of current borrow is null");
+            Log.e(getClass().getCanonicalName(), "current user of current borrow is null");
             return;
         }
         BmobRelation relation = new BmobRelation();
         relation.add(currentBorrow);
-        user.setCurrentBorrow(relation);
+        user.setCurrentBorrowRelation(relation);
         user.update(AppController.getInstance(), new UpdateListener() {
             @Override
             public void onSuccess() {
@@ -76,19 +77,18 @@ public class Relations {
 
             @Override
             public void onFailure(int i, String s) {
-                ToastUtil.show("Sorry! addCurrentBorrowToUser failure！ "+ s);
+                ToastUtil.show("Sorry! addCurrentBorrowToUser failure！ " + s);
             }
         });
     }
 
     public void findMyCurrentBorrow() {
         BmobQuery<CurrentBorrow> books = new BmobQuery<>();
-
         books.addWhereRelatedTo("currentBorrow", new BmobPointer(user));
         books.findObjects(AppController.getInstance(), new FindListener<CurrentBorrow>() {
             @Override
             public void onSuccess(List<CurrentBorrow> currentBorrows) {
-                ToastUtil.show("currentBorrow number == "+currentBorrows.size());
+                relationBook.getCurrentBorrowedBook(currentBorrows);
                 for (CurrentBorrow book : currentBorrows) {
                     Log.d("**findMyCurrentBorrow**", book.getTitle());
                 }
@@ -96,16 +96,16 @@ public class Relations {
 
             @Override
             public void onError(int i, String s) {
-                ToastUtil.show("findMyCurrentBorrow failure!"+ s);
             }
         });
     }
 
-    private String timeFormat() {
-        Time t = new Time();
-        t.setToNow();
+    private IRelationBook relationBook;
+    public void initIRelationBookObject(IRelationBook relationBook) {
+        this.relationBook =relationBook;
+    }
 
-        return t.year+"-"+t.month+"-"+t.monthDay;
-
+    public interface IRelationBook {
+        void getCurrentBorrowedBook(List<?> books);
     }
 }

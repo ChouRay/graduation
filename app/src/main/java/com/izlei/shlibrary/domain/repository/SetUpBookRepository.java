@@ -9,5 +9,6 @@ import com.izlei.shlibrary.domain.Book;
  */
 public interface SetUpBookRepository {
     void createBook(Context context, Book book);
-    void updateBook(Context context, Book book);
+    void borrowBook(Context context, Book book);
+    void sendBackBook(Context context, Book book);
 }

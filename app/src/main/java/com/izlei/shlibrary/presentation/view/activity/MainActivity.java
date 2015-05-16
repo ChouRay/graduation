@@ -39,6 +39,7 @@ public class MainActivity extends BaseActivity{
     public final static int NAV_FIRST_CODE = 0;
     public final static int SCANNING_REQUEST_CODE = 5;
     public final static int LOGIN_REQUEST_CODE = 6;
+    public final static int PERSONAL_REQUEST_CODE = 7;
 
     @InjectView(R.id.toolbar) Toolbar toolbar;
     @InjectView(R.id.drawer_layout) DrawerLayout drawerLayout;
@@ -50,7 +51,7 @@ public class MainActivity extends BaseActivity{
     private ActionBarDrawerToggle drawerToggle;
     private CharSequence drawerTitle;
     private CharSequence title;
-    private Navigator navigator;
+    public static Navigator navigator = new Navigator();
 
     private UserModel userModel;
     private GetUserPresenter getUserPresenter;
@@ -70,9 +71,6 @@ public class MainActivity extends BaseActivity{
         this.initDrawerLayout();
         if (savedInstanceState == null) {
             selectItem(MainActivity.NAV_FIRST_CODE);
-        }
-        if (navigator == null) {
-            navigator = new Navigator();
         }
     }
 
@@ -175,7 +173,11 @@ public class MainActivity extends BaseActivity{
             intent.setClass(MainActivity.this, LoginActivity.class);
             startActivityForResult(intent, LOGIN_REQUEST_CODE);
         }else{
-            navigator.navigationToPersonal(this);
+            Intent intent = PersonalActivity.getCallingIntent(this);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("USERMODEL", userModel);
+            intent.putExtras(bundle);
+            startActivityForResult(intent, PERSONAL_REQUEST_CODE);
         }
     }
 
@@ -248,6 +250,7 @@ public class MainActivity extends BaseActivity{
             @Override
             public void getCurrentUser(UserModel userModel) {
                 if (userModel != null) {
+                    MainActivity.this.userModel = userModel;
                     avatarName.setText(userModel.getUsername());
                     MainActivity.this.isLogin = true;
                 }
@@ -276,6 +279,11 @@ public class MainActivity extends BaseActivity{
                 break;
             case LoginActivity.LOGIN_OR_SIGNUP_SUCCESS:
                 refresh();
+                break;
+            case PersonalActivity.LOGOUT_RESULT_CODE:
+                avatarName.setText(getResources().getText(R.string.unlogin));
+                isLogin = false;
+                userModel = null;
                 break;
         }
     }

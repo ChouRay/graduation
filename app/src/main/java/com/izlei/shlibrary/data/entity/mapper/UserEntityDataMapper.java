@@ -2,7 +2,6 @@ package com.izlei.shlibrary.data.entity.mapper;
 
 import com.izlei.shlibrary.data.entity.UserEntity;
 import com.izlei.shlibrary.domain.User;
-import com.izlei.shlibrary.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +28,7 @@ public class UserEntityDataMapper {
             try {
                 user = new User();
                 user.setUsername(userEntity.getUsername());
+                user.setEmail(userEntity.getEmail());
             }catch (NullPointerException e) {
                 e.printStackTrace();
             }

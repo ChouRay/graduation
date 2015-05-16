@@ -1,15 +1,14 @@
 package com.izlei.shlibrary.presentation.presenter;
 
 
-import android.content.Context;
-import android.util.Log;
-
 import com.izlei.shlibrary.domain.Book;
 import com.izlei.shlibrary.domain.exception.ErrorBundle;
+import com.izlei.shlibrary.domain.interactor.BorrowBookCommand;
 import com.izlei.shlibrary.domain.interactor.Command;
-import com.izlei.shlibrary.domain.interactor.CreateBookCommand;
+import com.izlei.shlibrary.domain.interactor.DonateBookCommand;
 import com.izlei.shlibrary.domain.interactor.GetBookDetailsUseCase;
 import com.izlei.shlibrary.domain.interactor.GetBookDetailsUseCaseImpl;
+import com.izlei.shlibrary.domain.interactor.SendBackBookCommand;
 import com.izlei.shlibrary.presentation.mapper.BookModelDataMapper;
 import com.izlei.shlibrary.presentation.model.BookModel;
 import com.izlei.shlibrary.presentation.view.BookDetailsView;
@@ -25,6 +24,8 @@ public class BookDetailsPresenter implements Presenter {
     private final BookModelDataMapper bookModelDataMapper;
 
     private Command createBookCommand;
+    private Command borrowBookCommand;
+    private Command sendBackBookCommand;
 
     public BookDetailsPresenter() {
         getBookDetailsUseCase = new GetBookDetailsUseCaseImpl();
@@ -62,9 +63,25 @@ public class BookDetailsPresenter implements Presenter {
     public void createBookIntoRepository(BookModel bookModel) {
         Book book = this.bookModelDataMapper.transform(bookModel);
         if (createBookCommand == null) {
-            createBookCommand = new CreateBookCommand();
+            createBookCommand = new DonateBookCommand();
         }
         createBookCommand.execute(this.bookDetailsView.getContext(), book);
+    }
+
+    public void borrowBookFromRepository(BookModel bookModel) {
+        Book book = this.bookModelDataMapper.transform(bookModel);
+        if (borrowBookCommand == null) {
+            borrowBookCommand = new BorrowBookCommand();
+        }
+        borrowBookCommand.execute(this.bookDetailsView.getContext(), book);
+    }
+
+    public void sendBackBookToRepository(BookModel bookModel) {
+        Book book = this.bookModelDataMapper.transform(bookModel);
+        if (sendBackBookCommand == null) {
+            sendBackBookCommand = new SendBackBookCommand();
+        }
+        sendBackBookCommand.execute(this.bookDetailsView.getContext(),book);
     }
 
     @Override

@@ -10,6 +10,7 @@ import android.widget.EditText;
 import com.izlei.shlibrary.R;
 import com.izlei.shlibrary.presentation.model.UserModel;
 import com.izlei.shlibrary.presentation.presenter.UserLoginPresenter;
+import com.izlei.shlibrary.presentation.view.UIRefresh;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

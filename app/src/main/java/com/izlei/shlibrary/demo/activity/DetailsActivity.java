@@ -30,7 +30,7 @@ import com.izlei.shlibrary.demo.CreateBook;
 import com.izlei.shlibrary.demo.FindBook;
 import com.izlei.shlibrary.demo.UpdateBook;
 import com.izlei.shlibrary.demo.Login;
-import com.izlei.shlibrary.demo.Relations;
+import com.izlei.shlibrary.data.repository.Relations;
 import com.izlei.shlibrary.utils.ToastUtil;
 import com.thinkland.sdk.android.DataCallBack;
 import com.thinkland.sdk.android.JuheData;
@@ -319,8 +319,8 @@ public class DetailsActivity extends Activity implements FindBook.IFindBookObser
             if (currState == DetailsActivity.STATE_BORROWING){
                 if (books.size() != 0) {
                     /*将此书与用户关联*/
-                    Relations relations = new Relations();
-                    relations.saveCurrentBorrow(this.book);
+                    //Relations relations = new Relations();
+                    //relations.saveCurrentBorrow(this.book);
                     updateBook.updateBookStock((Book)books.get(0), -1);  //此书数量减去1
                 }else {
                     ToastUtil.show("此书还没入库呢！");

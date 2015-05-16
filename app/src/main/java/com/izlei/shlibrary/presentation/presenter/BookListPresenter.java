@@ -42,9 +42,7 @@ public class BookListPresenter  implements Presenter {
     public void setView(@NonNull BookListView view) {
         this.bookListView = view;
     }
-
-
-
+    
     /**
      * Loads all books
      */
