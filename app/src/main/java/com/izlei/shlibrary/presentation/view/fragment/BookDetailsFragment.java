@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.Cache;
@@ -40,6 +42,13 @@ public class BookDetailsFragment extends BaseFragment implements BookDetailsView
     @InjectView(R.id.textView_summary) TextView textViewSummary;
     @InjectView(R.id.textView_author_intro) TextView textViewAuthorIntro;
     @InjectView(R.id.textView_catalog) TextView textViewCatalog;
+
+    @InjectView(R.id.rl_progress)
+    RelativeLayout rl_progress;
+    @InjectView(R.id.rl_retry)
+    RelativeLayout rl_retry;
+    @InjectView(R.id.scrollView_book_details)
+    ScrollView scrollViewBookDetails;
 
     boolean isSummaryExpended = false;
     boolean isAuthorIntroExpended = false;
@@ -77,7 +86,10 @@ public class BookDetailsFragment extends BaseFragment implements BookDetailsView
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         this.initialize();
+        this.LoadBookDetails();
+    }
 
+    private void LoadBookDetails() {
         String isbn = getArguments().getString("ISBN");
         if (isbn!= null) {
             this.bookDetailsPresenter.LoadBookDetails(isbn);
@@ -99,7 +111,6 @@ public class BookDetailsFragment extends BaseFragment implements BookDetailsView
         if (bookModel != null) {
            this.bookDetailsPresenter.borrowBookFromRepository(bookModel);
         }
-
     }
     @OnClick(R.id.button_sendBack)
     public void sendBack() {
@@ -141,6 +152,11 @@ public class BookDetailsFragment extends BaseFragment implements BookDetailsView
     }
 
 
+    @OnClick(R.id.bt_retry)
+    void onButtonRetryClick() {
+        this.LoadBookDetails();
+    }
+
     private void makeImageRequest(ImageView imageView,String url) {
         Cache cache = AppController.getInstance().getRequestQueue().getCache();
         Cache.Entry entry = cache.get(url);
@@ -176,34 +192,49 @@ public class BookDetailsFragment extends BaseFragment implements BookDetailsView
         this.textViewCatalog.setText(bookModel.getCatalog());
     }
 
+    public void getCurrentBook(GetBookModelCallback callback) {
+        if (bookModel != null) {
+            callback.getBookModel(bookModel);
+        }
+    }
+    public interface GetBookModelCallback {
+        void getBookModel(BookModel bookModel);
+    }
+
     @Override
     public void showLoading() {
+        this.rl_progress.setVisibility(View.VISIBLE);
+        this.getActivity().setProgressBarIndeterminateVisibility(true);
 
+        this.scrollViewBookDetails.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void hideLoading() {
+        this.rl_progress.setVisibility(View.GONE);
+        this.getActivity().setProgressBarIndeterminateVisibility(false);
 
+        this.scrollViewBookDetails.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showRetry() {
-
+        this.rl_retry.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideRetry() {
-
+        this.rl_retry.setVisibility(View.GONE);
     }
 
     @Override
     public void showError(String message) {
-
+        this.showToastMessage(message);
     }
 
     @Override
     public Context getContext() {
-        return this.context;
+        return this.getActivity().getApplicationContext();
     }
 }
 

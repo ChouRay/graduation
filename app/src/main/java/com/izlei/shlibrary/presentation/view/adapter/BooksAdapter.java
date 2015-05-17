@@ -113,9 +113,11 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
     }
 
     public void refreshBooks(List<BookModel> booksList) {
-        this.validateBooksList(bookModelList);
-        this.bookModelList.addAll(0, booksList);
-        this.notifyDataSetChanged();
+        this.validateBooksList(booksList);
+        if (bookModelList != null) {
+            this.bookModelList.addAll(0, booksList);
+            this.notifyDataSetChanged();
+        }
     }
 
     public void addBook(List<BookModel> booksList) {

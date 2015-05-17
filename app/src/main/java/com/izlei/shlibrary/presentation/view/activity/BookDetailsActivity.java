@@ -4,19 +4,24 @@ package com.izlei.shlibrary.presentation.view.activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
 import com.izlei.shlibrary.R;
 
+import com.izlei.shlibrary.presentation.model.BookModel;
 import com.izlei.shlibrary.presentation.view.fragment.BookDetailsFragment;
 
 
 public class BookDetailsActivity extends BaseActivity {
 
     private Toolbar toolbar;
+    BookDetailsFragment bookDetailsFragment;
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, BookDetailsActivity.class);
@@ -32,13 +37,27 @@ public class BookDetailsActivity extends BaseActivity {
         getSupportActionBar().setTitle(getResources().getString(R.string.details));
 
         final String isbn = getIntent().getStringExtra("ISBN");
-        Fragment bookDetailsFragment = BookDetailsFragment.newInstance();
+        bookDetailsFragment = BookDetailsFragment.newInstance();
         if (isbn != null){
             Bundle bundle = new Bundle();
             bundle.putString("ISBN", isbn);
             bookDetailsFragment.setArguments(bundle);
             this.addFragment(R.id.book_details_container, bookDetailsFragment);
         }
+    }
+
+    public void onCollectClick(View v) {
+
+    }
+    public void onBuyClick(View v) {
+        bookDetailsFragment.getCurrentBook(new BookDetailsFragment.GetBookModelCallback() {
+            @Override
+            public void getBookModel(BookModel bookModel) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent .setData(Uri.parse(bookModel.getAlt()));
+                startActivity(intent);
+            }
+        });
     }
 
 

@@ -1,6 +1,8 @@
 package com.izlei.shlibrary.presentation.presenter;
 
 
+import android.util.Log;
+
 import com.izlei.shlibrary.domain.Book;
 import com.izlei.shlibrary.domain.exception.ErrorBundle;
 import com.izlei.shlibrary.domain.interactor.BorrowBookCommand;
@@ -12,6 +14,8 @@ import com.izlei.shlibrary.domain.interactor.SendBackBookCommand;
 import com.izlei.shlibrary.presentation.mapper.BookModelDataMapper;
 import com.izlei.shlibrary.presentation.model.BookModel;
 import com.izlei.shlibrary.presentation.view.BookDetailsView;
+
+import butterknife.OnClick;
 
 /**
  * Created by zhouzili on 2015/4/28.
@@ -36,12 +40,27 @@ public class BookDetailsPresenter implements Presenter {
         this.bookDetailsView = view;
     }
 
+    private void hideViewRetry() {
+        this.bookDetailsView.hideRetry();
+    }
+    private void showViewRetry() {
+        this.bookDetailsView.showRetry();
+    }
+    private void showViewLoading() {
+        this.bookDetailsView.showLoading();
+    }
+    private void hideViewLoading() {
+        this.bookDetailsView.hideLoading();
+    }
+
     private void showBookDetailsInView(Book book) {
         BookModel bookModel = this.bookModelDataMapper.transform(book);
         this.bookDetailsView.renderBookDetails(bookModel);
     }
 
     public void LoadBookDetails(final String isbn) {
+        this.showViewLoading();
+        this.hideViewRetry();
         this.getBookDetailsUseCase.execute(isbn,bookDetailsCallback);
         Thread thread = new Thread(this.getBookDetailsUseCase);
         thread.start();
@@ -51,12 +70,15 @@ public class BookDetailsPresenter implements Presenter {
             GetBookDetailsUseCase.Callback() {
                 @Override
                 public void onBookDataLoaded(Book book) {
+                    BookDetailsPresenter.this.hideViewLoading();
                     BookDetailsPresenter.this.showBookDetailsInView(book);
                 }
 
                 @Override
                 public void onError(ErrorBundle errorBundle) {
-
+                    //BookDetailsPresenter.this.hideViewLoading();
+                    BookDetailsPresenter.this.showViewRetry();
+                    Log.e(BookDetailsPresenter.class.getSimpleName(), errorBundle.getErrorMessage());
                 }
             };
 
@@ -83,6 +105,8 @@ public class BookDetailsPresenter implements Presenter {
         }
         sendBackBookCommand.execute(this.bookDetailsView.getContext(),book);
     }
+
+
 
     @Override
     public void resume() {

@@ -1,6 +1,7 @@
 package com.izlei.shlibrary.presentation.view.fragment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.izlei.shlibrary.R;
 import com.izlei.shlibrary.domain.Book;
@@ -30,6 +32,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * Created by zhouzili on 2015/4/20.
@@ -41,6 +44,7 @@ public class BookListFragment extends BaseFragment implements BookListView {
     public static final int LOAD_MORE_FLAG = 2;
     public static final int REFRESH_FLAG = 3;
     private int currentActionFlag = DEFAULT_FLAG;
+
 
     private int previousTotal = 0; // The total number of items in the data set after the last load
     private boolean loading = true; // True if we are still waiting for the last set of data to load.
@@ -58,6 +62,9 @@ public class BookListFragment extends BaseFragment implements BookListView {
 
     @InjectView(R.id.books_rv) RecyclerView rv_books;
     @InjectView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
+    @InjectView(R.id.rl_retry)
+    RelativeLayout rl_retry;
+    @InjectView(R.id.rl_progress) RelativeLayout rl_progress;
     private boolean isRefreshing = false;//是否刷新中
     private boolean isLoadingMore = false;
 
@@ -65,6 +72,7 @@ public class BookListFragment extends BaseFragment implements BookListView {
     private BooksAdapter booksAdapter;
 
     private BookListListener bookListListener;
+    ProgressDialog pDialog;
 
     public BookListFragment() {
         super();
@@ -159,6 +167,7 @@ public class BookListFragment extends BaseFragment implements BookListView {
 
 
     private void initialize() {
+
         this.bookListPresenter.setView(this);
     }
 
@@ -227,22 +236,24 @@ public class BookListFragment extends BaseFragment implements BookListView {
 
     @Override
     public void showLoading() {
-
+        this.rl_progress.setVisibility(View.VISIBLE);
+        this.getActivity().setProgressBarIndeterminateVisibility(true);
     }
 
     @Override
     public void hideLoading() {
-
+        this.rl_progress.setVisibility(View.GONE);
+        this.getActivity().setProgressBarIndeterminateVisibility(false);
     }
 
     @Override
     public void showRetry() {
-
+        this.rl_retry.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideRetry() {
-
+        this.rl_retry.setVisibility(View.GONE);
     }
 
     @Override
@@ -255,6 +266,10 @@ public class BookListFragment extends BaseFragment implements BookListView {
         return this.getActivity().getApplicationContext();
     }
 
+    @OnClick(R.id.bt_retry)
+    void onButtonRetryClick() {
+        this.LoadBookList(0,DEFAULT_FLAG);
+    }
 
 
     private BooksAdapter.OnItemClickListener onItemClickListener =

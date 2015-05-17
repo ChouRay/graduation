@@ -83,7 +83,7 @@ public class BookDataRepository implements BookRepository{
 
         @Override
         public void onError(Exception e) {
-
+            bookListCallback.onError(new RepositoryErrorBundle(e));
         }
     };
 

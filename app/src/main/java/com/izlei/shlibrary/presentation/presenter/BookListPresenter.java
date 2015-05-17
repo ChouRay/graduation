@@ -49,7 +49,7 @@ public class BookListPresenter  implements Presenter {
     public void loadBookList(int paramInt, int flag) {
         this.hideViewRetry();
         this.showViewLoading();
-        this.getUsrList(paramInt, flag);
+        this.getBookList(paramInt, flag);
     }
 
     private void hideViewRetry() {
@@ -57,7 +57,7 @@ public class BookListPresenter  implements Presenter {
     }
 
     private void showViewRetry() {
-        this.bookListView.hideRetry();
+        this.bookListView.showRetry();
     }
 
     private void showViewLoading() {
@@ -76,7 +76,8 @@ public class BookListPresenter  implements Presenter {
         this.bookListView.renderBookList(bookModelsList);   ///happened in BookListFragment.renderBookList
     }
 
-    private void getUsrList(int paramInt, int flag) {
+    private void getBookList(int paramInt, int flag) {
+        this.showViewLoading();
         this.getBookListUseCase.execute(bookListCallback, paramInt, flag);
         Thread thread = new Thread(this.getBookListUseCase);
         thread.start();
@@ -85,8 +86,8 @@ public class BookListPresenter  implements Presenter {
             GetBookListUseCase.Callback() {
                 @Override
                 public void onBookListLoaded(List<Book> bookList) {
-                    BookListPresenter.this.showBooksListInView(bookList);
                     BookListPresenter.this.hideViewLoading();
+                    BookListPresenter.this.showBooksListInView(bookList);
                 }
 
                 @Override
@@ -94,7 +95,7 @@ public class BookListPresenter  implements Presenter {
                     BookListPresenter.this.hideViewLoading();
                     //BookListPresenter.this.showErrorMessage();
                     BookListPresenter.this.showViewRetry();
-                    Log.e(TAG, "onError........... ");
+                    Log.e(TAG, errorBundle.getErrorMessage());
                 }
             };
 

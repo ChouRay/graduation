@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.izlei.shlibrary.app.AppController;
 import com.izlei.shlibrary.data.entity.BookEntity;
+import com.izlei.shlibrary.data.excption.BookNotFoundException;
 import com.izlei.shlibrary.data.net.RestApi;
 
 import java.text.ParseException;
@@ -51,6 +52,7 @@ public class CloudBookDataStore implements BookDataStore {
 
             @Override
             public void onError(int i, String s) {
+                bookListCallback.onError(new BookNotFoundException());
                 Log.e("getBookserror",s);
             }
         });
