@@ -11,4 +11,5 @@ public interface SetUpBookRepository {
     void createBook(Context context, Book book);
     void borrowBook(Context context, Book book);
     void sendBackBook(Context context, Book book);
+    void collectBook(Context context, Book book);
 }

@@ -1,5 +1,6 @@
 package com.izlei.shlibrary.data.repository;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.Log;
@@ -7,6 +8,7 @@ import android.util.Log;
 import com.izlei.shlibrary.app.AppController;
 import com.izlei.shlibrary.data.entity.BookEntity;
 import com.izlei.shlibrary.data.entity.CurrentBorrow;
+import com.izlei.shlibrary.data.entity.FavoriteEntity;
 import com.izlei.shlibrary.data.entity.UserEntity;
 import com.izlei.shlibrary.utils.ToastUtil;
 
@@ -26,6 +28,7 @@ import cn.bmob.v3.listener.UpdateListener;
 public class Relations {
     UserEntity user;
     CurrentBorrow currentBorrow;
+    FavoriteEntity favoriteEntity;
 
     public Relations() {
         this.user = BmobUser.getCurrentUser(AppController.getInstance(), UserEntity.class);
@@ -84,7 +87,7 @@ public class Relations {
 
     public void findMyCurrentBorrow() {
         BmobQuery<CurrentBorrow> books = new BmobQuery<>();
-        books.addWhereRelatedTo("currentBorrow", new BmobPointer(user));
+        books.addWhereRelatedTo("currentBorrowRelation", new BmobPointer(user));
         books.findObjects(AppController.getInstance(), new FindListener<CurrentBorrow>() {
             @Override
             public void onSuccess(List<CurrentBorrow> currentBorrows) {
@@ -99,6 +102,57 @@ public class Relations {
             }
         });
     }
+
+    private void addFavoriteToUser (Context context) {
+        if (TextUtils.isEmpty(user.getObjectId()) || TextUtils.isEmpty(favoriteEntity.getObjectId())) {
+            Log.e(getClass().getCanonicalName(), "current user of favorite is null");
+            return;
+        }
+        BmobRelation relation = new BmobRelation();
+        relation.add(favoriteEntity);
+        user.setFavoriteRelation(relation);
+        user.update(context, new UpdateListener() {
+            @Override
+            public void onSuccess() {
+                ToastUtil.show("add favorite to user success!");
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                ToastUtil.show("Sorry! add favorite to user failure！ " + s);
+            }
+        });
+    }
+
+    public void saveFavariteBook(final Context context, final BookEntity bookEntity) {
+        if (TextUtils.isEmpty(user.getObjectId())) {
+            Log.e(getClass().getSimpleName(), "Current user is null");
+            return;
+        }
+
+        if (favoriteEntity == null) {
+            favoriteEntity = new FavoriteEntity();
+        }
+        favoriteEntity.setUserEntity(user);
+        favoriteEntity.setImage(bookEntity.getImage());
+        favoriteEntity.setTitle(bookEntity.getTitle());
+        favoriteEntity.setPrice(bookEntity.getPrice());
+        favoriteEntity.setIsbn13(bookEntity.getIsbn13());
+        favoriteEntity.save(context, new SaveListener() {
+            @Override
+            public void onSuccess() {
+                addFavoriteToUser(context);
+                Log.i(Relations.class.getSimpleName(), "save favorite success!");
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                Log.i(Relations.class.getSimpleName(), "save favorite error!");
+            }
+        });
+    }
+
+
 
     private IRelationBook relationBook;
     public void initIRelationBookObject(IRelationBook relationBook) {

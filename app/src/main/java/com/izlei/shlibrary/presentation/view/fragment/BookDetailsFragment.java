@@ -119,6 +119,12 @@ public class BookDetailsFragment extends BaseFragment implements BookDetailsView
         }
     }
 
+    public void saveFavoriteBook() {
+        if (bookModel != null) {
+            this.bookDetailsPresenter.saveFavoriteBookToRepository(bookModel);
+        }
+    }
+
 
     @OnClick(R.id.frameLayout_summary)
     public void summary() {

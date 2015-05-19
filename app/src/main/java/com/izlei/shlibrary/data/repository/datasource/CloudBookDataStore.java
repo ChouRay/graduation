@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.izlei.shlibrary.app.AppController;
 import com.izlei.shlibrary.data.entity.BookEntity;
+import com.izlei.shlibrary.data.entity.FavoriteEntity;
 import com.izlei.shlibrary.data.excption.BookNotFoundException;
 import com.izlei.shlibrary.data.net.RestApi;
 
@@ -133,6 +134,26 @@ public class CloudBookDataStore implements BookDataStore {
             @Override
             public void onError(Exception e) {
                 bookDetailsCallback.onError(e);
+            }
+        });
+    }
+
+    @Override
+    public void getFavoriteEntityList(final BookListCallback bookListCallback) {
+        BmobQuery<FavoriteEntity>  query = new BmobQuery<>();
+        query.setCachePolicy(BmobQuery.CachePolicy.IGNORE_CACHE);
+        query.setLimit(10);
+        query.order("-updatedAt");
+        query.findObjects(AppController.getInstance(),new FindListener<FavoriteEntity>() {
+            @Override
+            public void onSuccess(List<FavoriteEntity> bookList) {
+                bookListCallback.onBookListLoaded(bookList);
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                bookListCallback.onError(new BookNotFoundException());
+                Log.e("getBookserror",s);
             }
         });
     }

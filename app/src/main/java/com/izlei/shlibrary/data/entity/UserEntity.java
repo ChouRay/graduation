@@ -14,12 +14,20 @@ public class UserEntity extends BmobUser implements Serializable {
     String address;
     BmobFile avatar;
     BmobRelation currentBorrowRelation;
+    BmobRelation favoriteRelation;
 
     public BmobRelation getCurrentBorrowRelation() {
         return this.currentBorrowRelation;
     }
     public void setCurrentBorrowRelation(BmobRelation currentBorrowRelation) {
         this.currentBorrowRelation = currentBorrowRelation;
+    }
+
+    public BmobRelation getFavoriteRelation() {
+        return this.favoriteRelation;
+    }
+    public void setFavoriteRelation(BmobRelation favoriteRelation) {
+        this.favoriteRelation = favoriteRelation;
     }
 
     public void setAddress(String address) {this.address = address;}

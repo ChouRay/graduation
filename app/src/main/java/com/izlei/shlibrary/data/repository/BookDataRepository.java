@@ -3,6 +3,7 @@ package com.izlei.shlibrary.data.repository;
 
 import com.izlei.shlibrary.app.AppController;
 import com.izlei.shlibrary.data.entity.BookEntity;
+import com.izlei.shlibrary.data.entity.FavoriteEntity;
 import com.izlei.shlibrary.data.entity.mapper.BookEntityDataMapper;
 import com.izlei.shlibrary.data.entity.mapper.BookEntityJsonMapper;
 import com.izlei.shlibrary.data.excption.BookNotFoundException;
@@ -76,8 +77,8 @@ public class BookDataRepository implements BookRepository{
 
     private BookDataStore.BookListCallback listCallback = new BookDataStore.BookListCallback() {
         @Override
-        public void onBookListLoaded(List<BookEntity> bookEntities) {
-            List<Book> bookList =getTransformBook(bookEntities);
+        public void onBookListLoaded(List<?> bookEntities) {
+            List<Book> bookList =getTransformBook((List<BookEntity>)bookEntities);
             bookListCallback.onBookListLoaded(bookList);
         }
 
@@ -87,6 +88,28 @@ public class BookDataRepository implements BookRepository{
         }
     };
 
+    @Override
+    public void getFavoriteBookList(final BookListCallback bookListCallback) {
+        this.bookListCallback = bookListCallback;
+        final BookDataStore bookDataStore = new CloudBookDataStore();
+        bookDataStore.getFavoriteEntityList(new BookDataStore.BookListCallback() {
+            @Override
+            public void onBookListLoaded(List<?> bookEntities) {
+                bookListCallback.onBookListLoaded(
+                        getTransformBookFavarite(
+                                (List<FavoriteEntity>)bookEntities));
+            }
+
+            @Override
+            public void onError(Exception e) {
+                bookListCallback.onError(new RepositoryErrorBundle(new BookNotFoundException()));
+            }
+        });
+    }
+
+    private List<Book> getTransformBookFavarite(List<FavoriteEntity> favoriteEntities) {
+        return this.bookEntityDataMapper.transformFavorite(favoriteEntities);
+    }
     private List<Book> getTransformBook(List<BookEntity> bookEntities){
         return BookDataRepository.this.bookEntityDataMapper.transform(bookEntities);
     }

@@ -145,4 +145,10 @@ public class SetUpBookDataRepository implements SetUpBookRepository{
         });
     }
 
+    @Override
+    public void collectBook(Context context, Book book) {
+        UserEntity user = BmobUser.getCurrentUser(context,UserEntity.class);
+        Relations relations = new Relations(user);
+        relations.saveFavariteBook(context, bookEntityDataMapper.transform(book));
+    }
 }

@@ -1,5 +1,6 @@
 package com.izlei.shlibrary.presentation.mapper;
 
+import com.izlei.shlibrary.data.entity.BookEntity;
 import com.izlei.shlibrary.domain.Book;
 import com.izlei.shlibrary.presentation.model.BookModel;
 
@@ -107,5 +108,30 @@ public class BookModelDataMapper {
         book.setSummary(bookModel.getSummary());
         book.setPrice(bookModel.getPrice());
         return book;
+    }
+
+
+    public List<BookModel> transformFavorite(List<Book> books) {
+        List<BookModel> bookList = new ArrayList<>();
+        BookModel bookModel;
+        for(Book book : books) {
+            bookModel = this.transformFavorite(book);
+            if (bookModel != null) {
+                bookList.add(bookModel);
+            }
+        }
+        return bookList;
+    }
+
+    public BookModel transformFavorite(Book book) {
+        BookModel bookModel = null;
+        if (book != null) {
+            bookModel = new BookModel();
+            bookModel.setImage(book.getImage());
+            bookModel.setTitle(book.getTitle());
+            bookModel.setIsbn13(book.getIsbn13());
+            bookModel.setPrice(book.getPrice());
+        }
+        return bookModel;
     }
 }

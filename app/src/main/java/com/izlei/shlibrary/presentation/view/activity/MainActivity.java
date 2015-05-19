@@ -22,6 +22,7 @@ import com.izlei.shlibrary.presentation.model.UserModel;
 import com.izlei.shlibrary.presentation.navigation.Navigator;
 import com.izlei.shlibrary.presentation.presenter.GetUserPresenter;
 import com.izlei.shlibrary.presentation.view.fragment.BookListFragment;
+import com.izlei.shlibrary.presentation.view.fragment.FavoriteBookFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +37,9 @@ import butterknife.OnClick;
  */
 public class MainActivity extends BaseActivity{
 
-    public final static int NAV_FIRST_CODE = 0;
+    public final static int NAV_FIRST_PAGE_CODE = 0;
+    public final static int NAV_SECOND_FAVORITE_CODE = 1;
+
     public final static int SCANNING_REQUEST_CODE = 5;
     public final static int LOGIN_REQUEST_CODE = 6;
     public final static int PERSONAL_REQUEST_CODE = 7;
@@ -70,7 +73,7 @@ public class MainActivity extends BaseActivity{
         this.loadCurrentUser();
         this.initDrawerLayout();
         if (savedInstanceState == null) {
-            selectItem(MainActivity.NAV_FIRST_CODE);
+            selectItem(MainActivity.NAV_FIRST_PAGE_CODE);
         }
     }
 
@@ -154,7 +157,18 @@ public class MainActivity extends BaseActivity{
     }
 
     private void selectItem(int position) {
-        this.addFragment(R.id.content_frame, BookListFragment.newInstance());
+        switch (position) {
+            case MainActivity.NAV_FIRST_PAGE_CODE:
+                this.addFragment(R.id.content_frame, BookListFragment.newInstance());
+                break;
+            case MainActivity.NAV_SECOND_FAVORITE_CODE:
+                this.addFragment(R.id.content_frame, FavoriteBookFragment.newInstance());
+                break;
+            default:
+                this.addFragment(R.id.content_frame, BookListFragment.newInstance());
+                break;
+        }
+
         // update selected item and title, then close the drawer
         drawerList.setItemChecked(position, true);
         drawerTitle = navTitles[position];

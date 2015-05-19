@@ -132,14 +132,4 @@ public class PersonalFragment extends Fragment implements Relations.IRelationBoo
         }
     }
 
-    public void update(int flag, List<?> books) {
-        if (flag == PersonalActivity.CURRENT_BORROWED) {
-            currentBorrows = (List<CurrentBorrow>)books;
-            if (adapter ==null) {
-                adapter = new CustomAdapter();
-                contentListView.setAdapter(adapter);
-            }
-            adapter.notifyDataSetChanged();
-        }
-    }
 }

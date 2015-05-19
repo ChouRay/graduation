@@ -48,6 +48,7 @@
 
     <string name="borrowed_date">借书日期:%1$s</string>
     <string name="sendback_date">应还日期:%1$s</string>
+    <string name="book_price">￥：%1$s</string>
 
     <string name="exception_message_generic">There was an application error</string>
     <string name="exception_message_no_connection">There is no internet connection</string>

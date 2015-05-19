@@ -47,7 +47,7 @@ public class BookDetailsActivity extends BaseActivity {
     }
 
     public void onCollectClick(View v) {
-
+        bookDetailsFragment.saveFavoriteBook();
     }
     public void onBuyClick(View v) {
         bookDetailsFragment.getCurrentBook(new BookDetailsFragment.GetBookModelCallback() {
@@ -59,7 +59,6 @@ public class BookDetailsActivity extends BaseActivity {
             }
         });
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

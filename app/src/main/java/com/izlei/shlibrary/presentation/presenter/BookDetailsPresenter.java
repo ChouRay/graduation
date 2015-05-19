@@ -6,6 +6,7 @@ import android.util.Log;
 import com.izlei.shlibrary.domain.Book;
 import com.izlei.shlibrary.domain.exception.ErrorBundle;
 import com.izlei.shlibrary.domain.interactor.BorrowBookCommand;
+import com.izlei.shlibrary.domain.interactor.CollectBookCommand;
 import com.izlei.shlibrary.domain.interactor.Command;
 import com.izlei.shlibrary.domain.interactor.DonateBookCommand;
 import com.izlei.shlibrary.domain.interactor.GetBookDetailsUseCase;
@@ -30,6 +31,7 @@ public class BookDetailsPresenter implements Presenter {
     private Command createBookCommand;
     private Command borrowBookCommand;
     private Command sendBackBookCommand;
+    private Command saveFavoriteCommand;
 
     public BookDetailsPresenter() {
         getBookDetailsUseCase = new GetBookDetailsUseCaseImpl();
@@ -106,6 +108,14 @@ public class BookDetailsPresenter implements Presenter {
         sendBackBookCommand.execute(this.bookDetailsView.getContext(),book);
     }
 
+
+    public void saveFavoriteBookToRepository(BookModel bookModel) {
+        Book book = this.bookModelDataMapper.transform(bookModel);
+        if (saveFavoriteCommand == null) {
+            saveFavoriteCommand = new CollectBookCommand();
+        }
+        saveFavoriteCommand.execute(this.bookDetailsView.getContext(), book);
+    }
 
 
     @Override

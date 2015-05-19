@@ -14,7 +14,7 @@ public interface BookDataStore {
      * any error happened.
      */
     interface BookListCallback{
-        void onBookListLoaded(List<BookEntity> bookEntities);
+        void onBookListLoaded(List<?> bookEntities);
         void onError(Exception e);
     }
 
@@ -37,6 +37,7 @@ public interface BookDataStore {
     public void getBookEntityDetails(String isbn, BookDetailsCallback bookDetailsCallback);
 
 
+    public void getFavoriteEntityList(BookListCallback bookListCallback);
 
 
 }

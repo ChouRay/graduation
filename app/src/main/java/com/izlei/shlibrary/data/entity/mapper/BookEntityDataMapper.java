@@ -1,6 +1,7 @@
 package com.izlei.shlibrary.data.entity.mapper;
 
 import com.izlei.shlibrary.data.entity.BookEntity;
+import com.izlei.shlibrary.data.entity.FavoriteEntity;
 import com.izlei.shlibrary.domain.Book;
 
 import java.util.ArrayList;
@@ -10,6 +11,30 @@ import java.util.List;
  * Created by zhouzili on 2015/4/23.
  */
 public class BookEntityDataMapper {
+
+    public List<Book> transformFavorite(List<FavoriteEntity> favoriteEntities) {
+        List<Book> bookList = new ArrayList<>();
+        Book book;
+        for(FavoriteEntity favoriteEntity : favoriteEntities) {
+            book = this.transform(favoriteEntity);
+            if (book != null) {
+                bookList.add(book);
+            }
+        }
+        return bookList;
+    }
+
+    public Book transform(FavoriteEntity favoriteEntity) {
+        Book book = null;
+        if (favoriteEntity != null) {
+            book = new Book();
+            book.setImage(favoriteEntity.getImage());
+            book.setTitle(favoriteEntity.getTitle());
+            book.setIsbn13(favoriteEntity.getIsbn13());
+            book.setPrice(favoriteEntity.getPrice());
+        }
+        return book;
+    }
 
     public Book transform(BookEntity bookEntity) {
         Book book = null;
