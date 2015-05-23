@@ -27,7 +27,15 @@ public interface GetBookListUseCase extends Interactor{
      * Executes this book case.
      *
      * @param callback A {@link GetBookListUseCase.Callback} used to notify the client.
-     * @param paramInt
+     * @param paramInt  used to skip page parameter.
+     * @param flag used to sign 3 operations: default, refresh and load more.
      */
     void execute(Callback callback, int paramInt, int flag);
+
+
+    /***
+     * Executes this book case
+     * @param callback A {@link GetBookListUseCase.Callback} used to notify the client.
+     */
+    void execute(Callback callback);
 }

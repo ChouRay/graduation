@@ -27,6 +27,7 @@ public class BookDetailsPresenter implements Presenter {
     private BookDetailsView bookDetailsView;
     private final GetBookDetailsUseCase getBookDetailsUseCase;
     private final BookModelDataMapper bookModelDataMapper;
+    private BookModel bookModel;
 
     private Command createBookCommand;
     private Command borrowBookCommand;
@@ -56,7 +57,7 @@ public class BookDetailsPresenter implements Presenter {
     }
 
     private void showBookDetailsInView(Book book) {
-        BookModel bookModel = this.bookModelDataMapper.transform(book);
+        bookModel = this.bookModelDataMapper.transform(book);
         this.bookDetailsView.renderBookDetails(bookModel);
     }
 
@@ -84,39 +85,51 @@ public class BookDetailsPresenter implements Presenter {
                 }
             };
 
-    public void createBookIntoRepository(BookModel bookModel) {
-        Book book = this.bookModelDataMapper.transform(bookModel);
-        if (createBookCommand == null) {
-            createBookCommand = new DonateBookCommand();
+    public void createBookIntoRepository() {
+        if (bookModel != null) {
+            Book book = this.bookModelDataMapper.transform(bookModel);
+            if (createBookCommand == null) {
+                createBookCommand = new DonateBookCommand();
+            }
+            createBookCommand.execute(this.bookDetailsView.getContext(), book);
         }
-        createBookCommand.execute(this.bookDetailsView.getContext(), book);
     }
 
-    public void borrowBookFromRepository(BookModel bookModel) {
-        Book book = this.bookModelDataMapper.transform(bookModel);
-        if (borrowBookCommand == null) {
-            borrowBookCommand = new BorrowBookCommand();
+    public void borrowBookFromRepository() {
+        if (bookModel != null) {
+            Book book = this.bookModelDataMapper.transform(bookModel);
+            if (borrowBookCommand == null) {
+                borrowBookCommand = new BorrowBookCommand();
+            }
+            borrowBookCommand.execute(this.bookDetailsView.getContext(), book);
         }
-        borrowBookCommand.execute(this.bookDetailsView.getContext(), book);
     }
 
-    public void sendBackBookToRepository(BookModel bookModel) {
-        Book book = this.bookModelDataMapper.transform(bookModel);
-        if (sendBackBookCommand == null) {
-            sendBackBookCommand = new SendBackBookCommand();
+    public void sendBackBookToRepository() {
+        if (bookModel != null) {
+            Book book = this.bookModelDataMapper.transform(bookModel);
+            if (sendBackBookCommand == null) {
+                sendBackBookCommand = new SendBackBookCommand();
+            }
+            sendBackBookCommand.execute(this.bookDetailsView.getContext(), book);
         }
-        sendBackBookCommand.execute(this.bookDetailsView.getContext(),book);
     }
 
 
-    public void saveFavoriteBookToRepository(BookModel bookModel) {
-        Book book = this.bookModelDataMapper.transform(bookModel);
-        if (saveFavoriteCommand == null) {
-            saveFavoriteCommand = new CollectBookCommand();
+    public void saveFavoriteBookToRepository() {
+        if (bookModel != null) {
+            Book book = this.bookModelDataMapper.transform(bookModel);
+            if (saveFavoriteCommand == null) {
+                saveFavoriteCommand = new CollectBookCommand();
+            }
+            saveFavoriteCommand.execute(this.bookDetailsView.getContext(), book);
         }
-        saveFavoriteCommand.execute(this.bookDetailsView.getContext(), book);
     }
 
+
+    public BookModel getBookModel(){
+        return this.bookModel;
+    }
 
     @Override
     public void resume() {

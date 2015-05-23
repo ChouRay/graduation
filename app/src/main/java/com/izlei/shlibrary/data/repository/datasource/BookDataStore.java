@@ -39,5 +39,6 @@ public interface BookDataStore {
 
     public void getFavoriteEntityList(BookListCallback bookListCallback);
 
+    void getSearchBookEntityList(BookListCallback bookListCallback, String param);
 
 }

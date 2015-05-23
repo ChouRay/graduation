@@ -10,6 +10,7 @@ import android.widget.EditText;
 import com.izlei.shlibrary.R;
 import com.izlei.shlibrary.presentation.model.UserModel;
 import com.izlei.shlibrary.presentation.presenter.UserLoginPresenter;
+import com.izlei.shlibrary.presentation.view.LoginSuccessListener;
 import com.izlei.shlibrary.presentation.view.UIRefresh;
 
 import butterknife.ButterKnife;
@@ -19,7 +20,7 @@ import butterknife.OnClick;
 /**
  * Created by zhouzili on 2015/5/9.
  */
-public class SignUpFragment extends BaseFragment implements LoginSuccessListener{
+public class SignUpFragment extends BaseFragment implements LoginSuccessListener {
 
     @InjectView(R.id.edit_name)
     EditText editTextName;
@@ -62,17 +63,17 @@ public class SignUpFragment extends BaseFragment implements LoginSuccessListener
 
     @OnClick(R.id.button_ok)
     public void onSignUpClick() {
-        UserModel userModel = new UserModel();
-        userModel.setUsername(editTextName.getText().toString());
-        userModel.setPassword(editTextPsd.getText().toString());
-        userModel.setEmail(editTextEmail.getText().toString());
-        this.userPresenter.userLogin(getActivity(), userModel, 1);  //1 present sign_up command
+        this.userPresenter.userSignUp(getActivity(), editTextName.getText().toString(),
+                editTextPsd.getText().toString(),
+                editTextEmail.getText().toString());  //1 present sign_up command
     }
 
 
     private void  refreshUI (boolean isTrue) {
         if (isTrue) {
             this.uiRefresh.notifyUIRefresh();
+        }else {
+            this.showToastMessage("SignUp Failure!");
         }
     }
 

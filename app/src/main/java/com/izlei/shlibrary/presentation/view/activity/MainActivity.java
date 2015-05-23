@@ -23,6 +23,7 @@ import com.izlei.shlibrary.presentation.navigation.Navigator;
 import com.izlei.shlibrary.presentation.presenter.GetUserPresenter;
 import com.izlei.shlibrary.presentation.view.fragment.BookListFragment;
 import com.izlei.shlibrary.presentation.view.fragment.FavoriteBookFragment;
+import com.izlei.shlibrary.presentation.view.fragment.SearchBookFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,6 +40,7 @@ public class MainActivity extends BaseActivity{
 
     public final static int NAV_FIRST_PAGE_CODE = 0;
     public final static int NAV_SECOND_FAVORITE_CODE = 1;
+    private final static int NAV_FIVE_SEARCH_CODE = 4;
 
     public final static int SCANNING_REQUEST_CODE = 5;
     public final static int LOGIN_REQUEST_CODE = 6;
@@ -163,6 +165,9 @@ public class MainActivity extends BaseActivity{
                 break;
             case MainActivity.NAV_SECOND_FAVORITE_CODE:
                 this.addFragment(R.id.content_frame, FavoriteBookFragment.newInstance());
+                break;
+            case MainActivity.NAV_FIVE_SEARCH_CODE:
+                this.addFragment(R.id.content_frame, SearchBookFragment.newInstance());
                 break;
             default:
                 this.addFragment(R.id.content_frame, BookListFragment.newInstance());

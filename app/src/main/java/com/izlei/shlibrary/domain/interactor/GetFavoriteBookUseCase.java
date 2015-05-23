@@ -16,6 +16,6 @@ public interface GetFavoriteBookUseCase extends Interactor {
         void onError(ErrorBundle errorBundle);
     }
 
-    public void execute(Callback callback);
+    void execute(Callback callback);
 
 }

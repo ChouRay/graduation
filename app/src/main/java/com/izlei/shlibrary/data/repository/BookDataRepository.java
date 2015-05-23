@@ -113,4 +113,11 @@ public class BookDataRepository implements BookRepository{
     private List<Book> getTransformBook(List<BookEntity> bookEntities){
         return BookDataRepository.this.bookEntityDataMapper.transform(bookEntities);
     }
+
+    @Override
+    public void getSearchBookList(BookListCallback bookListCallback, String searchText) {
+        final BookDataStore bookDataStore = new CloudBookDataStore();       //*need to improve*/
+        this.bookListCallback = bookListCallback;
+        bookDataStore.getSearchBookEntityList(listCallback, searchText);
+    }
 }

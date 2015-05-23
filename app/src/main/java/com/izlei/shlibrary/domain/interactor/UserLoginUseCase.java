@@ -12,5 +12,12 @@ public interface UserLoginUseCase extends Interactor{
         void onUserSignUpSuccess(boolean param);
     }
 
+    /**
+     *
+     * @param callback
+     * @param context
+     * @param user
+     * @param flag {flag ==0 represent Login, flag = 1 represent Sign Up}
+     */
     void execute(UserLoginCallback callback, Context context, User user, int flag);
 }

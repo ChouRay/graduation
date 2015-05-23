@@ -10,6 +10,8 @@ import com.izlei.shlibrary.data.entity.BookEntity;
 import com.izlei.shlibrary.data.entity.CurrentBorrow;
 import com.izlei.shlibrary.data.entity.FavoriteEntity;
 import com.izlei.shlibrary.data.entity.UserEntity;
+import com.izlei.shlibrary.data.excption.BookNotFoundException;
+import com.izlei.shlibrary.data.repository.datasource.BookDataStore;
 import com.izlei.shlibrary.utils.ToastUtil;
 
 import java.util.List;
@@ -37,8 +39,8 @@ public class Relations {
         this.user = user;
     }
     public void saveCurrentBorrow(BookEntity book) {
-        if (TextUtils.isEmpty(user.getObjectId())) {
-            ToastUtil.show("Current User is Null!");
+        if (user == null) {
+            Log.e(getClass().getSimpleName(),"Current User is Null!");
             return;
         }
         if (currentBorrow == null) {
@@ -65,7 +67,7 @@ public class Relations {
     }
 
     private void addCurrentBorrowToUser() {
-        if (TextUtils.isEmpty(user.getObjectId()) || TextUtils.isEmpty(currentBorrow.getObjectId())) {
+        if (user == null || currentBorrow == null) {
             Log.e(getClass().getCanonicalName(), "current user of current borrow is null");
             return;
         }
@@ -104,8 +106,8 @@ public class Relations {
     }
 
     private void addFavoriteToUser (Context context) {
-        if (TextUtils.isEmpty(user.getObjectId()) || TextUtils.isEmpty(favoriteEntity.getObjectId())) {
-            Log.e(getClass().getCanonicalName(), "current user of favorite is null");
+        if (user == null ||favoriteEntity ==null) {
+            Log.e(getClass().getCanonicalName(), "current user or favoriteEntity of favorite is null");
             return;
         }
         BmobRelation relation = new BmobRelation();
@@ -125,7 +127,7 @@ public class Relations {
     }
 
     public void saveFavariteBook(final Context context, final BookEntity bookEntity) {
-        if (TextUtils.isEmpty(user.getObjectId())) {
+        if (user == null) {
             Log.e(getClass().getSimpleName(), "Current user is null");
             return;
         }
@@ -152,6 +154,29 @@ public class Relations {
         });
     }
 
+
+    public void findMyFavorite(final BookDataStore.BookListCallback bookListCallback) {
+        if (user == null) {
+            Log.e(getClass().getSimpleName(), "Current user is null");
+            return;
+        }
+        BmobQuery<FavoriteEntity> books = new BmobQuery<>();
+        books.addWhereRelatedTo("favoriteRelation", new BmobPointer(user));
+        books.findObjects(AppController.getInstance(), new FindListener<FavoriteEntity>() {
+            @Override
+            public void onSuccess(List<FavoriteEntity> favoriteEntities) {
+                bookListCallback.onBookListLoaded(favoriteEntities);
+                for (FavoriteEntity book : favoriteEntities) {
+                    Log.d("**findd MyFavorite**", book.getTitle());
+                }
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                bookListCallback.onError(new BookNotFoundException());
+            }
+        });
+    }
 
 
     private IRelationBook relationBook;

@@ -1,5 +1,6 @@
 package com.izlei.shlibrary.domain.repository;
 
+import com.izlei.shlibrary.data.repository.datasource.BookDataStore;
 import com.izlei.shlibrary.domain.Book;
 import com.izlei.shlibrary.domain.exception.ErrorBundle;
 
@@ -35,4 +36,6 @@ public interface BookRepository {
     void getBookDetails(String isbn, BookDetailsCallback bookDetailsCallback);
 
     void getFavoriteBookList(BookListCallback bookListCallback);
+
+    void getSearchBookList(BookListCallback bookListCallback, String seartText);
 }

@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import com.izlei.shlibrary.R;
-import com.izlei.shlibrary.presentation.model.UserModel;
 import com.izlei.shlibrary.presentation.presenter.UserLoginPresenter;
+import com.izlei.shlibrary.presentation.view.LoginSuccessListener;
 import com.izlei.shlibrary.presentation.view.UIRefresh;
 
 import butterknife.ButterKnife;
@@ -19,7 +19,7 @@ import butterknife.OnClick;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class LoginActivityFragment extends BaseFragment implements LoginSuccessListener{
+public class LoginActivityFragment extends BaseFragment implements LoginSuccessListener {
 
     @InjectView(R.id.edit_password)
     EditText editTextPsd;
@@ -65,10 +65,8 @@ public class LoginActivityFragment extends BaseFragment implements LoginSuccessL
 
     @OnClick(R.id.button_login)
     public void onLoginClick() {
-        UserModel userModel = new UserModel();
-        userModel.setUsername(editTextName.getText().toString());
-        userModel.setPassword(editTextPsd.getText().toString());
-        this.userPresenter.userLogin(getActivity(), userModel, 0);  //0 present login command
+        this.userPresenter.userLogin(getActivity(),editTextName.getText().toString(),
+                editTextPsd.getText().toString());  //0 present login command
     }
 
     @OnClick(R.id.textView_sign_up)
@@ -81,6 +79,8 @@ public class LoginActivityFragment extends BaseFragment implements LoginSuccessL
     private void  refreshUI (boolean isTrue) {
         if (isTrue) {
             this.uiRefresh.notifyUIRefresh();
+        }else {
+            this.showToastMessage("Login Failure!");
         }
     }
 

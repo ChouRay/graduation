@@ -1,6 +1,5 @@
 package com.izlei.shlibrary.domain.interactor;
 
-import android.util.Log;
 
 import com.izlei.shlibrary.data.executor.JobExecutor;
 import com.izlei.shlibrary.data.repository.BookDataRepository;
@@ -60,9 +59,14 @@ public class GetBookListUseCaseImpl implements GetBookListUseCase {
         this.callback = callback;
         this.skipInt = paramInt;
         this.flag = flag;
-        this.threadExecutor.execute(this);
+        //this.threadExecutor.execute(this);
     }
 
+    @Override
+    public void execute(Callback callback) {
+        this.callback = callback;
+        //this.threadExecutor.execute(this);
+    }
 
     @Override
     public void run() {

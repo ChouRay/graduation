@@ -25,6 +25,7 @@
     <string name="load_more">加载更多</string>
     <string name="loading">加载中...</string>
     <string name="btn_text_retry">重试</string>
+    <string name="search_hint">书名、作者</string>
 	
 	<string-array name="navigation_array">
         <item>首页</item>

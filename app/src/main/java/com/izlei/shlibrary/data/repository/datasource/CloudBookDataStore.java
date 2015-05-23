@@ -11,9 +11,11 @@ import com.izlei.shlibrary.data.entity.BookEntity;
 import com.izlei.shlibrary.data.entity.FavoriteEntity;
 import com.izlei.shlibrary.data.excption.BookNotFoundException;
 import com.izlei.shlibrary.data.net.RestApi;
+import com.izlei.shlibrary.data.repository.Relations;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +32,7 @@ public class CloudBookDataStore implements BookDataStore {
     private static SharedPreferences.Editor editor = sharedPreferences.edit();
     private RestApi restApi;
     private int lock = 0;
+    Relations relations;
 
     public CloudBookDataStore(){
     }
@@ -140,13 +143,26 @@ public class CloudBookDataStore implements BookDataStore {
 
     @Override
     public void getFavoriteEntityList(final BookListCallback bookListCallback) {
-        BmobQuery<FavoriteEntity>  query = new BmobQuery<>();
-        query.setCachePolicy(BmobQuery.CachePolicy.IGNORE_CACHE);
-        query.setLimit(10);
-        query.order("-updatedAt");
-        query.findObjects(AppController.getInstance(),new FindListener<FavoriteEntity>() {
+        if (relations == null) {
+            relations = new Relations();
+        }
+        relations.findMyFavorite(bookListCallback);
+    }
+
+    @Override
+    public void getSearchBookEntityList(final BookListCallback bookListCallback, final String param) {
+        BmobQuery<BookEntity>  query = new BmobQuery<>();
+        query.addWhereContains("username", param);
+        BmobQuery<BookEntity>  query2 = new BmobQuery<>();
+        query2.addWhereContains("title", param);
+        List<BmobQuery<BookEntity>> queries = new ArrayList<>();
+        queries.add(query);
+        queries.add(query2);
+        BmobQuery<BookEntity> mainQuery = new BmobQuery<BookEntity>();
+        mainQuery.or(queries);
+        mainQuery.findObjects(AppController.getInstance(),new FindListener<BookEntity>() {
             @Override
-            public void onSuccess(List<FavoriteEntity> bookList) {
+            public void onSuccess(List<BookEntity> bookList) {
                 bookListCallback.onBookListLoaded(bookList);
             }
 

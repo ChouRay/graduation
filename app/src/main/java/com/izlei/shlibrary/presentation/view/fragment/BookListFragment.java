@@ -44,6 +44,7 @@ public class BookListFragment extends BaseFragment implements BookListView {
     public static final int LOAD_MORE_FLAG = 2;
     public static final int REFRESH_FLAG = 3;
     private int currentActionFlag = DEFAULT_FLAG;
+    static Navigator navigator =new Navigator();
 
 
     private int previousTotal = 0; // The total number of items in the data set after the last load
@@ -237,13 +238,17 @@ public class BookListFragment extends BaseFragment implements BookListView {
     @Override
     public void showLoading() {
         this.rl_progress.setVisibility(View.VISIBLE);
-        this.getActivity().setProgressBarIndeterminateVisibility(true);
+        if (getActivity() != null) {
+            this.getActivity().setProgressBarIndeterminateVisibility(true);
+        }
     }
 
     @Override
     public void hideLoading() {
         this.rl_progress.setVisibility(View.GONE);
-        this.getActivity().setProgressBarIndeterminateVisibility(false);
+        if (getActivity() != null) {
+            this.getActivity().setProgressBarIndeterminateVisibility(false);
+        }
     }
 
     @Override
@@ -276,7 +281,6 @@ public class BookListFragment extends BaseFragment implements BookListView {
             new BooksAdapter.OnItemClickListener() {
                 @Override
                 public void onBookItemClickListener(BookModel bookModel) {
-                    Navigator navigator =new Navigator();
                     navigator.navigationToBookDetails(getActivity(), bookModel.getIsbn13());
                    /* if (BookListFragment.this.bookListPresenter != null &&
                             bookModel != null) {

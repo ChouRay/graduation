@@ -40,11 +40,8 @@
         android:id="@+id/button_ok"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary"
+        android:background="@drawable/button_green"
         android:text="OK"
         />
-
-
-
 
 </LinearLayout>

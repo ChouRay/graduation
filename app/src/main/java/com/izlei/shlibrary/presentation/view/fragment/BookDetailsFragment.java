@@ -54,9 +54,6 @@ public class BookDetailsFragment extends BaseFragment implements BookDetailsView
     boolean isAuthorIntroExpended = false;
     boolean isCatalogExpended = false;
 
-    private BookModel bookModel;
-    private Context context;
-
     private BookDetailsPresenter bookDetailsPresenter;
 
     public static BookDetailsFragment newInstance() {
@@ -70,7 +67,6 @@ public class BookDetailsFragment extends BaseFragment implements BookDetailsView
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        context = activity;
         this.bookDetailsPresenter = new BookDetailsPresenter();
     }
 
@@ -102,27 +98,19 @@ public class BookDetailsFragment extends BaseFragment implements BookDetailsView
 
     @OnClick(R.id.button_donation)
     public void donate() {
-        if (bookModel != null) {
-            this.bookDetailsPresenter.createBookIntoRepository(bookModel);
-        }
+           this.bookDetailsPresenter.createBookIntoRepository();
     }
     @OnClick(R.id.button_borrow)
     public void borrow() {
-        if (bookModel != null) {
-           this.bookDetailsPresenter.borrowBookFromRepository(bookModel);
-        }
+        this.bookDetailsPresenter.borrowBookFromRepository();
     }
     @OnClick(R.id.button_sendBack)
     public void sendBack() {
-        if (bookModel != null) {
-            this.bookDetailsPresenter.sendBackBookToRepository(bookModel);
-        }
+        this.bookDetailsPresenter.sendBackBookToRepository();
     }
 
     public void saveFavoriteBook() {
-        if (bookModel != null) {
-            this.bookDetailsPresenter.saveFavoriteBookToRepository(bookModel);
-        }
+        this.bookDetailsPresenter.saveFavoriteBookToRepository();
     }
 
 
@@ -183,7 +171,7 @@ public class BookDetailsFragment extends BaseFragment implements BookDetailsView
 
     @Override
     public void renderBookDetails(BookModel bookModel) {
-        this.bookModel = bookModel;
+
         this.makeImageRequest(imageViewBook, bookModel.getImage());
         this.textViewTitle.setText(bookModel.getTitle());
         String author = "";
@@ -199,9 +187,7 @@ public class BookDetailsFragment extends BaseFragment implements BookDetailsView
     }
 
     public void getCurrentBook(GetBookModelCallback callback) {
-        if (bookModel != null) {
-            callback.getBookModel(bookModel);
-        }
+        callback.getBookModel(this.bookDetailsPresenter.getBookModel());
     }
     public interface GetBookModelCallback {
         void getBookModel(BookModel bookModel);
