@@ -2,8 +2,8 @@ package com.izlei.shlibrary.presentation.presenter;
 
 import android.content.Context;
 
-import com.izlei.shlibrary.domain.interactor.UserLoginUseCase;
-import com.izlei.shlibrary.domain.interactor.UserLoginUseCaseImpl;
+import com.izlei.shlibrary.domain.interactor.UserLoginOrSignUpUseCase;
+import com.izlei.shlibrary.domain.interactor.UserLoginOrSignUpUseCaseImpl;
 import com.izlei.shlibrary.presentation.mapper.UserModelDataMapper;
 import com.izlei.shlibrary.presentation.model.UserModel;
 import com.izlei.shlibrary.presentation.view.LoginSuccessListener;
@@ -13,7 +13,7 @@ import com.izlei.shlibrary.presentation.view.LoginSuccessListener;
  */
 public class UserLoginPresenter implements Presenter {
 
-    private UserLoginUseCase userLoginUseCase;
+    private UserLoginOrSignUpUseCase userLoginUseCase;
     private UserModelDataMapper userModelDataMapper;
 
     private LoginSuccessListener listener;
@@ -32,7 +32,7 @@ public class UserLoginPresenter implements Presenter {
         userModel.setUsername(username);
         userModel.setPassword(psd);
         if (userLoginUseCase == null) {
-            userLoginUseCase = new UserLoginUseCaseImpl();
+            userLoginUseCase = new UserLoginOrSignUpUseCaseImpl();
         }
         userLoginUseCase.execute(userLoginCallback, context, userModelDataMapper.transform(userModel), 0);
         Thread thread = new Thread(userLoginUseCase);
@@ -45,16 +45,16 @@ public class UserLoginPresenter implements Presenter {
         userModel.setPassword(psd);
         userModel.setEmail(email);
         if (userLoginUseCase == null) {
-            userLoginUseCase = new UserLoginUseCaseImpl();
+            userLoginUseCase = new UserLoginOrSignUpUseCaseImpl();
         }
         userLoginUseCase.execute(userLoginCallback, context, userModelDataMapper.transform(userModel), 1);
         Thread thread = new Thread(userLoginUseCase);
         thread.start();
     }
 
-    private final UserLoginUseCase.UserLoginCallback userLoginCallback = new UserLoginUseCase.UserLoginCallback() {
+    private final UserLoginOrSignUpUseCase.UserLoginOrSignUpCallback userLoginCallback = new UserLoginOrSignUpUseCase.UserLoginOrSignUpCallback() {
         @Override
-        public void onUserSignUpSuccess(boolean param) {
+        public void onUserLoginOrSignUpSuccess(boolean param) {
             listener.onLoginSuccess(param);
         }
     };

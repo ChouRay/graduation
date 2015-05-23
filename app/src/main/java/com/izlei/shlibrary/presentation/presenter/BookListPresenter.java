@@ -52,6 +52,11 @@ public class BookListPresenter  implements Presenter {
         this.getBookList(paramInt, flag);
     }
 
+    public void loadSearchBookList(String text) {
+        this.showViewLoading();
+        this.getBookListUseCase.execute(bookListCallback,text);
+    }
+
     private void hideViewRetry() {
         this.bookListView.hideRetry();
     }

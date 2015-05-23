@@ -11,7 +11,7 @@ import com.izlei.shlibrary.presentation.UIThread;
 /**
  * Created by zhouzili on 2015/5/7.
  */
-public class UserLoginUseCaseImpl implements UserLoginUseCase {
+public class UserLoginOrSignUpUseCaseImpl implements UserLoginOrSignUpUseCase {
 
     private final PostExecutionThread postExecutionThread;
     private UserRepository userRepository;
@@ -20,14 +20,14 @@ public class UserLoginUseCaseImpl implements UserLoginUseCase {
     /**flag is login or signup*/
     private int flag;
 
-    private UserLoginCallback callback;
-    public UserLoginUseCaseImpl() {
+    private UserLoginOrSignUpCallback callback;
+    public UserLoginOrSignUpUseCaseImpl() {
         userRepository = new UserDataRepository();
         postExecutionThread = new UIThread();
     }
 
     @Override
-    public void execute(UserLoginCallback callback, Context context, User user, int flag) {
+    public void execute(UserLoginOrSignUpCallback callback, Context context, User user, int flag) {
         this.callback = callback;
         this.context = context;
         this.user = user;
@@ -51,7 +51,7 @@ public class UserLoginUseCaseImpl implements UserLoginUseCase {
         this.postExecutionThread.post(new Runnable() {
             @Override
             public void run() {
-                callback.onUserSignUpSuccess(success);
+                callback.onUserLoginOrSignUpSuccess(success);
             }
         });
     }

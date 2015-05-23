@@ -37,5 +37,5 @@ public interface GetBookListUseCase extends Interactor{
      * Executes this book case
      * @param callback A {@link GetBookListUseCase.Callback} used to notify the client.
      */
-    void execute(Callback callback);
+    void execute(Callback callback, String text);
 }

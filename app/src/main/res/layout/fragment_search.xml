@@ -9,7 +9,7 @@
         android:layout_centerHorizontal="true"
         android:queryHint="@string/search_hint"
         />
-    <include layout="@layout/fragment_favorite"
+    <include layout="@layout/fragment_book_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/sv_search_book"

@@ -63,9 +63,10 @@ public class GetBookListUseCaseImpl implements GetBookListUseCase {
     }
 
     @Override
-    public void execute(Callback callback) {
+    public void execute(Callback callback, String text) {
         this.callback = callback;
         //this.threadExecutor.execute(this);
+        this.bookRepository.getSearchBookList(this.repositoryCallback,text);
     }
 
     @Override

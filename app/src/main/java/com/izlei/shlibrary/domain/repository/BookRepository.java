@@ -37,5 +37,5 @@ public interface BookRepository {
 
     void getFavoriteBookList(BookListCallback bookListCallback);
 
-    void getSearchBookList(BookListCallback bookListCallback, String seartText);
+    void getSearchBookList(BookListCallback bookListCallback, String searthText);
 }

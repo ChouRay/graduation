@@ -152,7 +152,7 @@ public class CloudBookDataStore implements BookDataStore {
     @Override
     public void getSearchBookEntityList(final BookListCallback bookListCallback, final String param) {
         BmobQuery<BookEntity>  query = new BmobQuery<>();
-        query.addWhereContains("username", param);
+        query.addWhereContains("author", param);
         BmobQuery<BookEntity>  query2 = new BmobQuery<>();
         query2.addWhereContains("title", param);
         List<BmobQuery<BookEntity>> queries = new ArrayList<>();
