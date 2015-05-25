@@ -195,8 +195,8 @@ public class BookListFragment extends BaseFragment implements BookListView {
     @Override
     public void renderBookList(List<BookModel> booksList) {
         if (booksList != null) {
-            if (this.booksAdapter == null) {
-                this.booksAdapter = new BooksAdapter(getActivity());
+            if (this.booksAdapter == null && getActivity() != null) {
+                this.booksAdapter = new BooksAdapter(getContext());
                 this.booksAdapter.setOnItemClickListener(onItemClickListener);
                 this.rv_books.setAdapter(this.booksAdapter);
             }

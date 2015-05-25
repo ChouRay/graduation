@@ -3,6 +3,7 @@ package com.izlei.shlibrary.presentation.view.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,9 @@ public class SearchBookFragment extends BaseFragment implements SearchView.OnQue
     @InjectView(R.id.rl_retry)
     RelativeLayout rl_retry;
     @InjectView(R.id.rl_progress) RelativeLayout rl_progress;
+    @InjectView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
+
     private BookLayoutManager bookLayoutManager;
     private BooksAdapter booksAdapter;
     private BookListListener bookListListener;
@@ -92,7 +96,6 @@ public class SearchBookFragment extends BaseFragment implements SearchView.OnQue
     @Override
     public boolean onQueryTextSubmit(String query) {
         this.LoadBookList(query);
-        this.showToastMessage("Your Input is " + query);
         return true;
     }
 
@@ -108,6 +111,7 @@ public class SearchBookFragment extends BaseFragment implements SearchView.OnQue
                 this.booksAdapter = new BooksAdapter(getActivity());
                 this.booksAdapter.setOnItemClickListener(onItemClickListener);
                 this.rv_books.setAdapter(this.booksAdapter);
+                swipeRefreshLayout.setRefreshing(false);
             }
             SearchBookFragment.this.booksAdapter.setBookList(booksList);
         }

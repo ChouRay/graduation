@@ -21,6 +21,7 @@ import com.izlei.shlibrary.R;
 import com.izlei.shlibrary.presentation.model.UserModel;
 import com.izlei.shlibrary.presentation.navigation.Navigator;
 import com.izlei.shlibrary.presentation.presenter.GetUserPresenter;
+import com.izlei.shlibrary.presentation.view.fragment.BookBarFragment;
 import com.izlei.shlibrary.presentation.view.fragment.BookListFragment;
 import com.izlei.shlibrary.presentation.view.fragment.FavoriteBookFragment;
 import com.izlei.shlibrary.presentation.view.fragment.SearchBookFragment;
@@ -40,6 +41,7 @@ public class MainActivity extends BaseActivity{
 
     public final static int NAV_FIRST_PAGE_CODE = 0;
     public final static int NAV_SECOND_FAVORITE_CODE = 1;
+    public final static int NAV_THREE_BOOKBAR_CODE = 2;
     private final static int NAV_FIVE_SEARCH_CODE = 4;
 
     public final static int SCANNING_REQUEST_CODE = 5;
@@ -168,6 +170,9 @@ public class MainActivity extends BaseActivity{
                 break;
             case MainActivity.NAV_FIVE_SEARCH_CODE:
                 this.addFragment(R.id.content_frame, SearchBookFragment.newInstance());
+                break;
+            case MainActivity.NAV_THREE_BOOKBAR_CODE:
+                this.addFragment(R.id.content_frame, BookBarFragment.newInstance());
                 break;
             default:
                 this.addFragment(R.id.content_frame, BookListFragment.newInstance());

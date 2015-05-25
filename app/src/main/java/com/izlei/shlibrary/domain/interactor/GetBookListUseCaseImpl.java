@@ -1,6 +1,8 @@
 package com.izlei.shlibrary.domain.interactor;
 
 
+import android.util.Log;
+
 import com.izlei.shlibrary.data.executor.JobExecutor;
 import com.izlei.shlibrary.data.repository.BookDataRepository;
 import com.izlei.shlibrary.domain.Book;
@@ -59,7 +61,7 @@ public class GetBookListUseCaseImpl implements GetBookListUseCase {
         this.callback = callback;
         this.skipInt = paramInt;
         this.flag = flag;
-        //this.threadExecutor.execute(this);
+        this.threadExecutor.execute(this);
     }
 
     @Override
@@ -71,7 +73,9 @@ public class GetBookListUseCaseImpl implements GetBookListUseCase {
 
     @Override
     public void run() {
+        Log.e(getClass().getSimpleName(),Thread.currentThread().getName()+" Start");
         this.bookRepository.getBookList(this.repositoryCallback, this.skipInt, this.flag);
+        Log.e(getClass().getSimpleName(), Thread.currentThread().getName() + " End");
     }
 
     private final BookRepository.BookListCallback repositoryCallback =

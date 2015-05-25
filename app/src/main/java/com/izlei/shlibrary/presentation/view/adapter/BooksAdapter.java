@@ -43,7 +43,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
 
     public BooksAdapter(Context context) {
         this.context = context;
-        this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.layoutInflater = LayoutInflater.from(context);
         this.imageLoader =  AppController.getInstance().getImageLoader();
     }
 

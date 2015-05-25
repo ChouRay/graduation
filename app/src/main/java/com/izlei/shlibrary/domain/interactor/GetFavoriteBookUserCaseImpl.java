@@ -16,19 +16,20 @@ import java.util.List;
  */
 public class GetFavoriteBookUserCaseImpl implements GetFavoriteBookUseCase {
     private final BookRepository bookRepository;
-    private final ThreadExecutor threadExecutor;
+    //private final ThreadExecutor threadExecutor;
     private final PostExecutionThread postExecutionThread;
     private GetFavoriteBookUseCase.Callback callback;
 
     public GetFavoriteBookUserCaseImpl() {
         bookRepository = new BookDataRepository();
-        threadExecutor = new JobExecutor();
+        //threadExecutor = new JobExecutor();
         postExecutionThread = new UIThread();
     }
 
     @Override
     public void execute(Callback callback) {
         this.callback = callback;
+        //threadExecutor.execute(this);
     }
 
     @Override

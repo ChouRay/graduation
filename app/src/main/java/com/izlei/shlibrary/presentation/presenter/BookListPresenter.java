@@ -84,8 +84,8 @@ public class BookListPresenter  implements Presenter {
     private void getBookList(int paramInt, int flag) {
         this.showViewLoading();
         this.getBookListUseCase.execute(bookListCallback, paramInt, flag);
-        Thread thread = new Thread(this.getBookListUseCase);
-        thread.start();
+        //Thread thread = new Thread(this.getBookListUseCase);
+        //thread.start();
     }
     private GetBookListUseCase.Callback bookListCallback = new
             GetBookListUseCase.Callback() {

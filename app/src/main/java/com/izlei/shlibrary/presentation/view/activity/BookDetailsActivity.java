@@ -53,9 +53,11 @@ public class BookDetailsActivity extends BaseActivity {
         bookDetailsFragment.getCurrentBook(new BookDetailsFragment.GetBookModelCallback() {
             @Override
             public void getBookModel(BookModel bookModel) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent .setData(Uri.parse(bookModel.getAlt()));
-                startActivity(intent);
+                if (bookModel != null) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(bookModel.getAlt()));
+                    startActivity(intent);
+                }
             }
         });
     }

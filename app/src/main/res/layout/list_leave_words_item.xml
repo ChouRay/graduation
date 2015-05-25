@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_list_leave_words_item"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_avatar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@mipmap/ic_action_action_face"
+        />
+
+    <RelativeLayout
+        android:id="@+id/rl_leave_words"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/iv_avatar"
+        android:layout_marginStart="5dp"
+        >
+        <TextView
+            android:id="@+id/tv_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="12dp"
+            android:text="zhoulei"
+            />
+        <TextView
+            android:id="@+id/tv_leave_words"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_username"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black"
+            android:text="hfahfahfkahdfkahdfkafahkdfhak"
+            />
+
+        <RelativeLayout
+            android:id="@+id/rl_temp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_leave_words"
+            android:layout_marginTop="5dp"
+            >
+            <TextView
+                android:id="@+id/tv_updated_at"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="shijian" />
+            <Button
+                android:id="@+id/btn_comment"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                android:background="@mipmap/ic_action_communication_comment"
+                />
+        </RelativeLayout>
+
+        <include layout="@layout/list_comment_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_temp"
+            />
+    </RelativeLayout>
+
+</RelativeLayout>
