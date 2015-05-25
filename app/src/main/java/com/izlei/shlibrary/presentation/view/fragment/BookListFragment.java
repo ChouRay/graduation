@@ -104,8 +104,15 @@ public class BookListFragment extends BaseFragment implements BookListView {
 
     @Override public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        this.initialize();
-        this.LoadBookList(0,DEFAULT_FLAG);   // 0 represent load book from first index（descending order load）
+        if (savedInstanceState == null) {
+            if (this.booksAdapter == null && getActivity() != null) {
+                this.booksAdapter = new BooksAdapter(getActivity());
+                this.booksAdapter.setOnItemClickListener(onItemClickListener);
+                this.rv_books.setAdapter(this.booksAdapter);
+            }
+            this.initialize();
+            this.LoadBookList(0,DEFAULT_FLAG);   // 0 represent load book from first index（descending order load）
+        }
     }
 
     private void setupUI() {
@@ -168,7 +175,6 @@ public class BookListFragment extends BaseFragment implements BookListView {
 
 
     private void initialize() {
-
         this.bookListPresenter.setView(this);
     }
 
@@ -195,11 +201,7 @@ public class BookListFragment extends BaseFragment implements BookListView {
     @Override
     public void renderBookList(List<BookModel> booksList) {
         if (booksList != null) {
-            if (this.booksAdapter == null && getActivity() != null) {
-                this.booksAdapter = new BooksAdapter(getContext());
-                this.booksAdapter.setOnItemClickListener(onItemClickListener);
-                this.rv_books.setAdapter(this.booksAdapter);
-            }
+
             handler.sendMessage(handler.obtainMessage(currentActionFlag,booksList));
         }
     }

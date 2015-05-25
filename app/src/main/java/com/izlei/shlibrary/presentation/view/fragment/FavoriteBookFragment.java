@@ -67,6 +67,11 @@ public class FavoriteBookFragment extends BaseFragment implements BookListView,A
 
     @Override public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if (adapter == null) {
+            adapter = new MyAdapter();
+            contentListView.setAdapter(adapter);
+            contentListView.setOnItemClickListener(this);
+        }
         this.initialize();
         this.LoadBookList();
     }
@@ -86,12 +91,6 @@ public class FavoriteBookFragment extends BaseFragment implements BookListView,A
     @Override
     public void renderBookList(List<BookModel> booksList) {
         this.bookModelList = booksList;
-
-        if (adapter == null) {
-            adapter = new MyAdapter();
-            contentListView.setAdapter(adapter);
-            contentListView.setOnItemClickListener(this);
-        }
         adapter.notifyDataSetChanged();
     }
 
