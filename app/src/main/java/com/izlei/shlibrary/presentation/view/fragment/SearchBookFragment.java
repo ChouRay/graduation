@@ -122,9 +122,9 @@ public class SearchBookFragment extends BaseFragment implements SearchView.OnQue
                 @Override
                 public void onBookItemClickListener(BookModel bookModel) {
                     navigator.navigationToBookDetails(getActivity(), bookModel.getIsbn13());
-                   /* if (BookListFragment.this.bookListPresenter != null &&
+                   /* if (BookListFragment.this.presenter != null &&
                             bookModel != null) {
-                        BookListFragment.this.bookListPresenter.onBookClicked(bookModel);
+                        BookListFragment.this.presenter.onBookClicked(bookModel);
                     }*/
                 }
             };

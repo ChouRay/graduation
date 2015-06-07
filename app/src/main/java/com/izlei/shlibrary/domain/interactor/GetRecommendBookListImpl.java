@@ -1,7 +1,5 @@
 package com.izlei.shlibrary.domain.interactor;
 
-import android.util.Log;
-
 import com.izlei.shlibrary.data.executor.JobExecutor;
 import com.izlei.shlibrary.data.repository.BookDataRepository;
 import com.izlei.shlibrary.domain.Book;
@@ -14,33 +12,36 @@ import com.izlei.shlibrary.presentation.UIThread;
 import java.util.List;
 
 /**
- * Created by zhouzili on 2015/5/18.
+ * Created by zhouzili on 2015/6/4.
  */
-public class GetFavoriteBookUserCaseImpl implements GetFavoriteBookUseCase {
+public class GetRecommendBookListImpl implements GetBookListUseCase {
+
     private final BookRepository bookRepository;
-    //private final ThreadExecutor threadExecutor;
+    private final ThreadExecutor threadExecutor;
     private final PostExecutionThread postExecutionThread;
-    private GetFavoriteBookUseCase.Callback callback;
+    private Callback callback;
+    private int skipInt;
+    private int flag;
 
-    private ThreadExecutor threadExecutor;
-
-    public GetFavoriteBookUserCaseImpl() {
+    public GetRecommendBookListImpl() {
         bookRepository = new BookDataRepository();
         threadExecutor = JobExecutor.getInstance();
         postExecutionThread = new UIThread();
     }
-
     @Override
-    public void execute(Callback callback) {
+    public void execute(Callback callback, int paramInt, int flag) {
+        if (callback == null) {
+            throw new IllegalArgumentException("Interactor callback cannot be null!");
+        }
         this.callback = callback;
-        threadExecutor.execute(this);
+        this.skipInt = paramInt;
+        this.flag = flag;
+        this.threadExecutor.execute(this);
     }
 
     @Override
-    public void run() {
-        Log.e(getClass().getSimpleName(), Thread.currentThread().getName() + " Start");
-        this.bookRepository.getFavoriteBookList(repositoryCallback);
-        Log.e(getClass().getSimpleName(), Thread.currentThread().getName() + " End");
+    public void execute(Callback callback, String text) {
+
     }
 
     private final BookRepository.BookListCallback repositoryCallback =
@@ -56,6 +57,11 @@ public class GetFavoriteBookUserCaseImpl implements GetFavoriteBookUseCase {
                 }
             };
 
+    @Override
+    public void run() {
+        this.bookRepository.getRecommendBookList(repositoryCallback);
+    }
+
     private void notifyGetBookListSuccessfully(final List<Book> bookList) {
 
         this.postExecutionThread.post(new Runnable() {
@@ -65,6 +71,7 @@ public class GetFavoriteBookUserCaseImpl implements GetFavoriteBookUseCase {
             }
         });
     }
+
     private void notifyError(final ErrorBundle errorBundle) {
         this.postExecutionThread.post(new Runnable() {
             @Override
@@ -73,5 +80,4 @@ public class GetFavoriteBookUserCaseImpl implements GetFavoriteBookUseCase {
             }
         });
     }
-
 }

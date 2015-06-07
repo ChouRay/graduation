@@ -2,9 +2,11 @@ package com.izlei.shlibrary.domain.interactor;
 
 import android.content.Context;
 
+import com.izlei.shlibrary.data.executor.JobExecutor;
 import com.izlei.shlibrary.data.repository.UserDataRepository;
 import com.izlei.shlibrary.domain.User;
 import com.izlei.shlibrary.domain.executor.PostExecutionThread;
+import com.izlei.shlibrary.domain.executor.ThreadExecutor;
 import com.izlei.shlibrary.domain.repository.UserRepository;
 import com.izlei.shlibrary.presentation.UIThread;
 
@@ -15,6 +17,7 @@ public class UserLoginOrSignUpUseCaseImpl implements UserLoginOrSignUpUseCase {
 
     private final PostExecutionThread postExecutionThread;
     private UserRepository userRepository;
+    private final ThreadExecutor threadExecutor;
     private Context context;
     private User user;
     /**flag is login or signup*/
@@ -23,6 +26,7 @@ public class UserLoginOrSignUpUseCaseImpl implements UserLoginOrSignUpUseCase {
     private UserLoginOrSignUpCallback callback;
     public UserLoginOrSignUpUseCaseImpl() {
         userRepository = new UserDataRepository();
+        threadExecutor = JobExecutor.getInstance();
         postExecutionThread = new UIThread();
     }
 
@@ -32,6 +36,7 @@ public class UserLoginOrSignUpUseCaseImpl implements UserLoginOrSignUpUseCase {
         this.context = context;
         this.user = user;
         this.flag = flag;
+        threadExecutor.execute(this);
     }
 
     @Override

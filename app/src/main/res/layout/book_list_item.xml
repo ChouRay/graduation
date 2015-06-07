@@ -13,7 +13,7 @@
         android:id="@+id/tv_book_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/img_book_thumbnail"
+        android:layout_toRightOf="@id/img_book_thumbnail"
         android:text="计算机程序的构造和解释(原书第二版)"
         android:textSize="18dp" />
 
@@ -21,7 +21,7 @@
         android:id="@+id/tv_book_author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/img_book_thumbnail"
+        android:layout_toRightOf="@id/img_book_thumbnail"
         android:layout_below="@+id/tv_book_title"
         android:layout_marginTop="10dp"
         android:text="(美)Harold Abelson,julie sussman等著" />
@@ -30,7 +30,7 @@
         android:id="@+id/tv_book_stock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/img_book_thumbnail"
+        android:layout_toRightOf="@id/img_book_thumbnail"
         android:layout_below="@id/tv_book_author"
         android:layout_marginTop="20dp"
         android:text="数量：" />

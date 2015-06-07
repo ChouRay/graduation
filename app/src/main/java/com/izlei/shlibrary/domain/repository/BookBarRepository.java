@@ -17,7 +17,7 @@ public interface BookBarRepository {
         void onError(ErrorBundle errorBundle);
     }
 
-    void getMomentList(MomentListCallback momentListCallback);
+    void getMomentList(MomentListCallback momentListCallback, int skip);
 
     void createComment(Context context,BookBar bookBar);
 }

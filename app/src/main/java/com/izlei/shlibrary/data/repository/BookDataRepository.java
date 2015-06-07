@@ -73,8 +73,6 @@ public class BookDataRepository implements BookRepository{
         });
     }
 
-
-
     private BookDataStore.BookListCallback listCallback = new BookDataStore.BookListCallback() {
         @Override
         public void onBookListLoaded(List<?> bookEntities) {
@@ -119,5 +117,12 @@ public class BookDataRepository implements BookRepository{
         final BookDataStore bookDataStore = new CloudBookDataStore();       //*need to improve*/
         this.bookListCallback = bookListCallback;
         bookDataStore.getSearchBookEntityList(listCallback, searchText);
+    }
+
+    @Override
+    public void getRecommendBookList(BookListCallback bookListCallback) {
+        this.bookListCallback = bookListCallback;
+        final BookDataStore bookDataStore = new CloudBookDataStore();
+        bookDataStore.getRecommendBookEntityList(listCallback);
     }
 }

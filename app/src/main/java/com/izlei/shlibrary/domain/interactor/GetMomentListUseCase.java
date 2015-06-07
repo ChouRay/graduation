@@ -15,5 +15,5 @@ public interface GetMomentListUseCase extends Interactor {
         void onError(ErrorBundle errorBundle);
     }
 
-    void execute(Callback callback);
+    void execute(Callback callback, int skip);
 }

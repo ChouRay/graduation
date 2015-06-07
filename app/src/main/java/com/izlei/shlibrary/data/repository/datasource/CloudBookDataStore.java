@@ -173,4 +173,21 @@ public class CloudBookDataStore implements BookDataStore {
             }
         });
     }
+
+    @Override
+    public void getRecommendBookEntityList(final BookListCallback bookListCallback) {
+        final BmobQuery<BookEntity> query = new BmobQuery<>();
+        query.order("-borrowedCount");
+        query.findObjects(AppController.getInstance(), new FindListener<BookEntity>() {
+            @Override
+            public void onSuccess(List<BookEntity> list) {
+                bookListCallback.onBookListLoaded(list);
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                bookListCallback.onError(new BookNotFoundException());
+            }
+        });
+    }
 }

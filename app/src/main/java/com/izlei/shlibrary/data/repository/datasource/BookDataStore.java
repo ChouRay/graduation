@@ -29,16 +29,17 @@ public interface BookDataStore {
      *  @param bookListCallback A {@link com.izlei.shlibrary.data.repository.datasource.BookDataStore.BookListCallback}
      *                          used for notify clients.
      */
-    public void getBooksEntityList(BookListCallback bookListCallback, int paramInt);
+   void getBooksEntityList(BookListCallback bookListCallback, int paramInt);
 
-    public void getSkipBooksEntityList(BookListCallback bookListCallback, int paramInt);
-    public void getRefreshBooksEntityList(BookListCallback bookListCallback, int paramInt);
+   void getSkipBooksEntityList(BookListCallback bookListCallback, int paramInt);
+   void getRefreshBooksEntityList(BookListCallback bookListCallback, int paramInt);
 
-    public void getBookEntityDetails(String isbn, BookDetailsCallback bookDetailsCallback);
+   void getBookEntityDetails(String isbn, BookDetailsCallback bookDetailsCallback);
 
 
-    public void getFavoriteEntityList(BookListCallback bookListCallback);
+   void getFavoriteEntityList(BookListCallback bookListCallback);
 
     void getSearchBookEntityList(BookListCallback bookListCallback, String param);
 
+    void getRecommendBookEntityList(BookListCallback bookListCallback);
 }

@@ -30,8 +30,6 @@ public class GetUserPresenter implements Presenter{
 
     public void getCurrentUser(Context context) {
         userUseCase.execute(callback, context,0);
-        Thread thread = new Thread(userUseCase);
-        thread.start();
     }
     public void getRelationUsers(Context context) {
         userUseCase.execute(callback, context, 1);

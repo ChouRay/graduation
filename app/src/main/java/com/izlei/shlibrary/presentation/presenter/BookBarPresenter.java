@@ -37,14 +37,14 @@ public class BookBarPresenter implements Presenter {
         this.loadBookBarView = bookBarView;
     }
 
-    public void loadCommentList() {
+    public void loadCommentList(int skip) {
         this.showViewLoading();
         this.hideViewRetry();
-        this.getComments();
+        this.getComments(skip);
     }
 
-    private void getComments() {
-        getMomentListUseCase.execute(callback);
+    private void getComments(int skip) {
+        getMomentListUseCase.execute(callback,skip);
     }
 
     private GetMomentListUseCase.Callback callback =

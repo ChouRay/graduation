@@ -63,9 +63,6 @@ public class FavoriteBookListPresenter implements Presenter {
         this.showViewLoading();
         this.hideViewRetry();
         this.getFavoriteBookUseCase.execute(callback);
-
-        Thread thread = new Thread(getFavoriteBookUseCase);
-        thread.start();
     }
 
     private GetFavoriteBookUseCase.Callback callback = new GetFavoriteBookUseCase.Callback() {

@@ -60,6 +60,14 @@ public class PersonalFragment extends Fragment implements Relations.IRelationBoo
         return rootView;
     }
 
+    @Override public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (adapter ==null) {
+            adapter = new CustomAdapter();
+            contentListView.setAdapter(adapter);
+        }
+    }
+
     public void setUserInfoText(UserModel userModel) {
         nameText.setText(userModel.getUsername());
         emailTextView.setText(userModel.getEmail());
@@ -73,17 +81,14 @@ public class PersonalFragment extends Fragment implements Relations.IRelationBoo
     @Override
     public void getCurrentBorrowedBook(List<?> books) {
         currentBorrows = (List<CurrentBorrow>) books;
-        if (adapter ==null) {
-            adapter = new CustomAdapter();
-            contentListView.setAdapter(adapter);
-        }
+
         adapter.notifyDataSetChanged();
     }
 
     class CustomAdapter extends BaseAdapter {
         @Override
         public int getCount() {
-            return currentBorrows.size();
+            return (currentBorrows != null)?  currentBorrows.size() : 0;
         }
 
         @Override

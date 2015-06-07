@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +14,10 @@ import android.widget.RelativeLayout;
 
 import com.izlei.shlibrary.R;
 import com.izlei.shlibrary.presentation.model.BookBarModel;
-import com.izlei.shlibrary.presentation.model.UserModel;
 import com.izlei.shlibrary.presentation.presenter.BookBarPresenter;
 import com.izlei.shlibrary.presentation.view.LoadBookBarView;
 import com.izlei.shlibrary.presentation.view.adapter.BookBarAdapter;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -41,6 +39,10 @@ public class BookBarFragment extends BaseFragment implements LoadBookBarView{
     RelativeLayout rl_retry;
     @InjectView(R.id.rl_progress) RelativeLayout rl_progress;
 
+    private int previousTotal = 0; // The total number of items in the data set after the last load
+    private boolean loading = true; // True if we are still waiting for the last set of data to load.
+    private int visibleThreshold = 1; // The minimum amount of items to have below your current scroll position before loading more.
+    int firstVisibleItem, visibleItemCount, totalItemCount;
 
     private LinearLayoutManager linearLayoutManager;
     private BookBarAdapter bookBarAdapter;
@@ -70,26 +72,29 @@ public class BookBarFragment extends BaseFragment implements LoadBookBarView{
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        this.initialize();
-        this.loadBookBarMoments();
+        if(savedInstanceState == null) {
+            this.initialize();
+            if (this.bookBarAdapter == null && getActivity() != null) {
+                this.bookBarAdapter = new BookBarAdapter(getContext());
+                recyclerView.setAdapter(bookBarAdapter);
+            }
+            this.loadBookBarMoments(0);
+        }
     }
 
     private void initialize() {
         bookBarPresenter.setView(this);
     }
 
-    private void loadBookBarMoments() {
-        bookBarPresenter.loadCommentList();
+    private void loadBookBarMoments(int skip) {
+        bookBarPresenter.loadCommentList(skip);
     }
 
     private void setupUI() {
         this.recyclerView.setHasFixedSize(true);
         this.linearLayoutManager = new LinearLayoutManager(getActivity());
         this.recyclerView.setLayoutManager(linearLayoutManager);
-        if (this.bookBarAdapter == null && getActivity() != null) {
-            this.bookBarAdapter = new BookBarAdapter(getContext());
-            recyclerView.setAdapter(bookBarAdapter);
-        }
+        this.autoLoadedMore();
     }
 
     @OnClick(R.id.btn_send)
@@ -101,6 +106,36 @@ public class BookBarFragment extends BaseFragment implements LoadBookBarView{
         }
         this.bookBarPresenter.createComment(leaveWords,username);
         editTextLeaveWords.setText("");
+    }
+
+
+    private void autoLoadedMore() {
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                visibleItemCount = recyclerView.getChildCount();
+                totalItemCount = linearLayoutManager.getItemCount();
+                firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
+                //Log.e(TAG, "visibleItemCount="+visibleItemCount+" totalItemCount="+totalItemCount+" firstVisibleItem"+firstVisibleItem+" previousTotal=="+previousTotal);
+                if (totalItemCount < previousTotal) {
+                    previousTotal = totalItemCount;
+                }
+                if (loading) {
+                    if (totalItemCount > previousTotal + 1) {
+                        loading = false;
+                        previousTotal = totalItemCount;
+                        //Log.e(TAG, "loading--previousTotal=="+previousTotal);
+                    }
+                }
+                if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
+                    // End has been reached
+                    BookBarFragment.this.loadBookBarMoments(bookBarAdapter.getItemCount());
+                    loading = true;
+                    Log.e(getClass().getSimpleName(), "not loading");
+                }
+            }
+        });
     }
 
     @Override
@@ -115,7 +150,7 @@ public class BookBarFragment extends BaseFragment implements LoadBookBarView{
     @Override
     public void rendererMoment(BookBarModel bookBarModel) {
         if (bookBarModel != null && bookBarAdapter != null) {
-            bookBarAdapter.addMoments(bookBarModel);
+            bookBarAdapter.addMoment(bookBarModel);
         }
     }
 
@@ -123,7 +158,7 @@ public class BookBarFragment extends BaseFragment implements LoadBookBarView{
 
     @OnClick(R.id.bt_retry)
     void onButtonRetryClick() {
-        this.loadBookBarMoments();
+        this.loadBookBarMoments(0);
     }
 
 

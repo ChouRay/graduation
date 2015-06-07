@@ -6,14 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.izlei.shlibrary.R;
 import com.izlei.shlibrary.presentation.model.BookBarModel;
-import com.izlei.shlibrary.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +31,7 @@ public class BookBarAdapter extends  RecyclerView.Adapter<BookBarAdapter.LeaveWo
     public BookBarAdapter(Context context) {
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
+        bookBarModels = new ArrayList<>();
     }
 
 
@@ -57,20 +55,18 @@ public class BookBarAdapter extends  RecyclerView.Adapter<BookBarAdapter.LeaveWo
     }
 
     public void setMoments(List<BookBarModel> bookBarModelList) {
-        this.bookBarModels = bookBarModelList;
+        for(BookBarModel moment : bookBarModelList) {
+            this.bookBarModels.add(moment);
+        }
         this.notifyDataSetChanged();
     }
 
-    public void addMoments(BookBarModel bookBarModel) {
-        if (this.bookBarModels != null) {
-            this.bookBarModels.add(0,bookBarModel);
-            this.notifyDataSetChanged();
-        }else {
-            this.bookBarModels =new  ArrayList<>();
-            this.bookBarModels.add(0,bookBarModel);
-            this.notifyDataSetChanged();
-        }
+    public void addMoment(BookBarModel bookBarModel) {
+        this.bookBarModels.add(0,bookBarModel);
+        this.notifyDataSetChanged();
+
     }
+
 
     class LeaveWordsViewHolder extends RecyclerView.ViewHolder {
         @InjectView(R.id.iv_avatar)

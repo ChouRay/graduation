@@ -15,8 +15,7 @@ public class CurrentBorrow extends BmobObject{
     String isbn;
     String borrowDate;
     String sendbackDate;
-    UserEntity user;
-
+    UserEntity user;;
     public void setUserEntity(UserEntity user) {
         this.user = user;
     }
@@ -57,5 +56,4 @@ public class CurrentBorrow extends BmobObject{
     public String getSendbackDate() {
         return this.sendbackDate;
     }
-
 }

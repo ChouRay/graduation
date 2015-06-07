@@ -3,6 +3,7 @@ package com.izlei.shlibrary.data.repository;
 import android.content.Context;
 import android.util.Log;
 
+import com.izlei.shlibrary.app.AppController;
 import com.izlei.shlibrary.data.entity.BookEntity;
 import com.izlei.shlibrary.data.entity.UserEntity;
 import com.izlei.shlibrary.data.entity.mapper.BookEntityDataMapper;
@@ -32,7 +33,7 @@ public class SetUpBookDataRepository implements SetUpBookRepository{
     boolean isSendBack = false;
 
     public SetUpBookDataRepository() {
-        bookEntityDataMapper = new BookEntityDataMapper();
+        //bookEntityDataMapper = new BookEntityDataMapper();
     }
 
     @Override
@@ -63,7 +64,15 @@ public class SetUpBookDataRepository implements SetUpBookRepository{
     @Override
     public void sendBackBook(Context context, Book book) {
         if (!isSendBack) {
-            this.findBookByIsbn(context, book);
+            UserEntity user = BmobUser.getCurrentUser(context,UserEntity.class);
+            if (user != null) {
+                this.findBookByIsbn(context, book);
+                isSendBack = true;
+            }else {
+                ToastUtil.show("Please Login!");
+            }
+        }else {
+            ToastUtil.show("Has SendBack!");
         }
     }
 
@@ -91,7 +100,7 @@ public class SetUpBookDataRepository implements SetUpBookRepository{
         query.findObjects(context, new FindListener<BookEntity>() {
             @Override
             public void onSuccess(List<BookEntity> bookEntities) {
-                if (bookEntities.size() != 0 && bookEntities.get(0).getStock() >0) {
+                if (bookEntities.size() != 0 && bookEntities.get(0).getStock() > 0) {
                     /*relative to user*/
                     Relations relations = new Relations(user);
                     relations.saveCurrentBorrow(bookEntities.get(0));
@@ -110,6 +119,7 @@ public class SetUpBookDataRepository implements SetUpBookRepository{
         });
     }
     private void findBookByIsbn(final Context context,final Book book) {
+        final BookEntityDataMapper bookEntityDataMapper = new BookEntityDataMapper();
         BmobQuery<BookEntity> query = new BmobQuery<>();
         query.addWhereEqualTo("isbn13", book.getIsbn13());
         query.findObjects(context, new FindListener<BookEntity>() {
@@ -126,6 +136,21 @@ public class SetUpBookDataRepository implements SetUpBookRepository{
             @Override
             public void onError(int i, String s) {
                 Log.e(TAG, "findBookByIsbn Error " + s);
+            }
+        });
+    }
+
+    public void updateBookBorrowedCount(final BookEntity bookEntity) {
+        bookEntity.setBorrowedCount(bookEntity.getBorrowedCount() + 1);
+        bookEntity.update(AppController.getInstance(), new UpdateListener() {
+            @Override
+            public void onSuccess() {
+                Log.e(SetUpBookDataRepository.class.getSimpleName(), "update borrowed count success");
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+
             }
         });
     }
@@ -147,6 +172,7 @@ public class SetUpBookDataRepository implements SetUpBookRepository{
 
     @Override
     public void collectBook(Context context, Book book) {
+        final BookEntityDataMapper bookEntityDataMapper = new BookEntityDataMapper();
         UserEntity user = BmobUser.getCurrentUser(context,UserEntity.class);
         Relations relations = new Relations(user);
         relations.saveFavariteBook(context, bookEntityDataMapper.transform(book));

@@ -3,43 +3,37 @@ package com.izlei.shlibrary.presentation.view.fragment;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.izlei.shlibrary.R;
-import com.izlei.shlibrary.domain.Book;
 import com.izlei.shlibrary.presentation.model.BookModel;
 import com.izlei.shlibrary.presentation.navigation.Navigator;
-import com.izlei.shlibrary.presentation.presenter.BookListPresenter;
+import com.izlei.shlibrary.presentation.presenter.Presenter;
+import com.izlei.shlibrary.presentation.presenter.RecommendBookListPresenter;
 import com.izlei.shlibrary.presentation.view.BookListView;
 import com.izlei.shlibrary.presentation.view.adapter.BookLayoutManager;
 import com.izlei.shlibrary.presentation.view.adapter.BooksAdapter;
 
-import java.lang.ref.WeakReference;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
 /**
- * Created by zhouzili on 2015/4/20.
+ * Created by zhouzili on 2015/6/4.
  */
-public class BookListFragment extends BaseFragment implements BookListView {
+public class RecommendBookListFragment  extends BaseFragment implements BookListView {
 
-    public static final String TAG = BookListFragment.class.getSimpleName();
+    public static final String TAG = RecommendBookListFragment.class.getSimpleName();
     public static final int DEFAULT_FLAG = 1;
     public static final int LOAD_MORE_FLAG = 2;
     public static final int REFRESH_FLAG = 3;
@@ -59,30 +53,30 @@ public class BookListFragment extends BaseFragment implements BookListView {
         void onBookListListener(final BookModel bookModel);
     }
 
-    BookListPresenter bookListPresenter;
+    RecommendBookListPresenter presenter;
 
-    @InjectView(R.id.books_rv) RecyclerView rv_books;
-    @InjectView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
+    @InjectView(R.id.books_rv)
+    RecyclerView rv_books;
+    @InjectView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
     @InjectView(R.id.rl_retry)
     RelativeLayout rl_retry;
     @InjectView(R.id.rl_progress) RelativeLayout rl_progress;
-    private boolean isRefreshing = false;//ÊòØÂê¶Âà∑Êñ∞‰∏≠
+    private boolean isRefreshing = false;// «∑ÒÀ¢–¬÷–
     private boolean isLoadingMore = false;
 
     private BookLayoutManager bookLayoutManager;
     private BooksAdapter booksAdapter;
 
     private BookListListener bookListListener;
-    ProgressDialog pDialog;
 
-    public BookListFragment() {
+    public RecommendBookListFragment() {
         super();
     }
 
 
-    public static BookListFragment newInstance() {
-        BookListFragment bookListFragment = new BookListFragment();
-        return bookListFragment;
+    public static RecommendBookListFragment newInstance() {
+        return new RecommendBookListFragment();
     }
 
     @Override public void onAttach(Activity activity) {
@@ -90,7 +84,7 @@ public class BookListFragment extends BaseFragment implements BookListView {
         if (activity instanceof BookListListener) {
             this.bookListListener = (BookListListener) activity;
         }
-        this.bookListPresenter = new BookListPresenter();
+        this.presenter = new RecommendBookListPresenter();
     }
 
     @Override public View onCreateView(LayoutInflater inflater,
@@ -111,7 +105,7 @@ public class BookListFragment extends BaseFragment implements BookListView {
                 this.rv_books.setAdapter(this.booksAdapter);
             }
             this.initialize();
-            this.LoadBookList(0,DEFAULT_FLAG);   // 0 represent load book from first indexÔºàdescending order loadÔºâ
+            this.LoadBookList(0,DEFAULT_FLAG);   // 0 represent load book from first index£®descending order load£©
         }
     }
 
@@ -129,7 +123,7 @@ public class BookListFragment extends BaseFragment implements BookListView {
             public void onRefresh() {
                 if(!isRefreshing){
                     currentActionFlag = REFRESH_FLAG;
-                    BookListFragment.this.LoadBookList(0,currentActionFlag);
+                    RecommendBookListFragment.this.LoadBookList(0,currentActionFlag);
                     isRefreshing = true;
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -164,7 +158,7 @@ public class BookListFragment extends BaseFragment implements BookListView {
                 if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
                     // End has been reached
                     currentActionFlag = LOAD_MORE_FLAG;
-                    BookListFragment.this.LoadBookList(booksAdapter.getItemCount(), currentActionFlag);
+                    RecommendBookListFragment.this.LoadBookList(booksAdapter.getItemCount(), currentActionFlag);
                     loading = true;
                     //Log.e(TAG,"not loading");
                 }
@@ -172,30 +166,28 @@ public class BookListFragment extends BaseFragment implements BookListView {
         });
     }
 
-
-
     private void initialize() {
-        this.bookListPresenter.setView(this);
+        this.presenter.setView(this);
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
-        this.bookListPresenter.resume();
+        this.presenter.resume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        this.bookListPresenter.pause();
+        this.presenter.pause();
     }
 
     /**
      * Load books.
      */
     private void LoadBookList(int skipIndex, int flag) {
-        this.bookListPresenter.loadBookList(skipIndex, flag);
+        this.presenter.loadBookList(skipIndex, flag);
     }
 
     @Override
@@ -212,15 +204,15 @@ public class BookListFragment extends BaseFragment implements BookListView {
             super.handleMessage(msg);
             switch (msg.what) {
                 case DEFAULT_FLAG:
-                    BookListFragment.this.booksAdapter.setBookList((List<BookModel>)msg.obj);
+                    RecommendBookListFragment.this.booksAdapter.setBookList((List<BookModel>)msg.obj);
                     break;
                 case REFRESH_FLAG:
-                    BookListFragment.this.booksAdapter.refreshBooks((List<BookModel>)msg.obj);
+                    RecommendBookListFragment.this.booksAdapter.refreshBooks((List<BookModel>)msg.obj);
                     swipeRefreshLayout.setRefreshing(false);
                     currentActionFlag = DEFAULT_FLAG;
                     break;
                 case LOAD_MORE_FLAG:
-                    BookListFragment.this.booksAdapter.addBook((List<BookModel>)msg.obj);
+                    RecommendBookListFragment.this.booksAdapter.addBook((List<BookModel>)msg.obj);
                     currentActionFlag = DEFAULT_FLAG;
                     break;
                 default:
@@ -290,5 +282,4 @@ public class BookListFragment extends BaseFragment implements BookListView {
                     }*/
                 }
             };
-
 }

@@ -22,7 +22,7 @@ public class GetBookDetailsUseCaseImpl implements GetBookDetailsUseCase {
 
     public GetBookDetailsUseCaseImpl () {
         bookRepository = new BookDataRepository();
-        threadExecutor = new JobExecutor();
+        threadExecutor = JobExecutor.getInstance();
         postExecutionThread = new UIThread();
     }
 

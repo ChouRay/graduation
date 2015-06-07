@@ -2,9 +2,11 @@ package com.izlei.shlibrary.domain.interactor;
 
 import android.content.Context;
 
+import com.izlei.shlibrary.data.executor.JobExecutor;
 import com.izlei.shlibrary.data.repository.UserDataRepository;
 import com.izlei.shlibrary.domain.User;
 import com.izlei.shlibrary.domain.executor.PostExecutionThread;
+import com.izlei.shlibrary.domain.executor.ThreadExecutor;
 import com.izlei.shlibrary.domain.repository.UserRepository;
 import com.izlei.shlibrary.presentation.UIThread;
 
@@ -21,8 +23,10 @@ public class GetUserUseCaseImpl implements GetUserUseCase {
     private int flag;
 
     final private PostExecutionThread postExecutionThread;
+    private final ThreadExecutor threadExecutor;
     public GetUserUseCaseImpl(){
         repository = new UserDataRepository();
+        threadExecutor = JobExecutor.getInstance();
         postExecutionThread = new UIThread();
     }
 
@@ -31,6 +35,7 @@ public class GetUserUseCaseImpl implements GetUserUseCase {
         this.callback = callback;
         this.context = context;
         this.flag = flag;
+        threadExecutor.execute(this);
     }
 
     @Override

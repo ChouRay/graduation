@@ -27,10 +27,11 @@ public class BookBarDataRepository implements BookBarRepository {
     }
 
     @Override
-    public void getMomentList(final MomentListCallback momentListCallback) {
+    public void getMomentList(final MomentListCallback momentListCallback, int skip) {
         final BmobQuery<BookBarEntity> query = new BmobQuery<>();
         query.setCachePolicy(BmobQuery.CachePolicy.IGNORE_CACHE);
         query.setLimit(10);
+        query.setSkip(skip);
         query.order("-updatedAt");
         query.findObjects(AppController.getInstance(), new FindListener<BookBarEntity>() {
             @Override

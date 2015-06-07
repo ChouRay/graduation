@@ -11,6 +11,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+
 /**
  * Created by zhouzili on 2015/4/23.
  */
@@ -27,6 +28,14 @@ public class JobExecutor implements ThreadExecutor {
     private final ThreadFactory threadFactory;
     private final BlockingDeque<Runnable> workQueue;
 
+    /**Lazy Singleton model, it's thread safety*/
+    private static class JobExecutorHolder {
+        private final static JobExecutor INSTANCE = new JobExecutor();
+    }
+    public static JobExecutor getInstance() {
+        return JobExecutorHolder.INSTANCE;
+    }
+
     public JobExecutor() {
         this.threadFactory = new JobThreadFactory();
         this.workQueue = new LinkedBlockingDeque<>();
@@ -41,10 +50,6 @@ public class JobExecutor implements ThreadExecutor {
             throw new IllegalArgumentException("Runnable to execute cannot to be null");
         }
         this.threadPoolExecutor.execute(runnable);
-    }
-
-    public Thread getNewThread(Runnable runnable) {
-        return this.threadFactory.newThread(runnable);
     }
 
     private static class JobThreadFactory implements ThreadFactory {

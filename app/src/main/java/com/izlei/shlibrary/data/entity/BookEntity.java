@@ -35,8 +35,8 @@ public class BookEntity extends BmobObject{
     private String author_intro;
     private String summary;
     private String price;
-
     private int stock;
+    private int borrowedCount;
 
     public BookEntity() {}
 
@@ -207,5 +207,12 @@ public class BookEntity extends BmobObject{
     }
     public int getStock () {
         return this.stock;
+    }
+
+    public void setBorrowedCount(int borrowedCount) {
+        this.borrowedCount = borrowedCount;
+    }
+    public int getBorrowedCount() {
+        return this.borrowedCount;
     }
 }

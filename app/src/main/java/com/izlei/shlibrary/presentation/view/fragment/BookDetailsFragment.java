@@ -204,7 +204,9 @@ public class BookDetailsFragment extends BaseFragment implements BookDetailsView
     @Override
     public void hideLoading() {
         this.rl_progress.setVisibility(View.GONE);
-        this.getActivity().setProgressBarIndeterminateVisibility(false);
+        if (this.getActivity() != null) {
+            this.getActivity().setProgressBarIndeterminateVisibility(false);
+        }
 
         this.scrollViewBookDetails.setVisibility(View.VISIBLE);
     }

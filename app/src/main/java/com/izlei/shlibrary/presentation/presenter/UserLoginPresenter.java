@@ -35,8 +35,6 @@ public class UserLoginPresenter implements Presenter {
             userLoginUseCase = new UserLoginOrSignUpUseCaseImpl();
         }
         userLoginUseCase.execute(userLoginCallback, context, userModelDataMapper.transform(userModel), 0);
-        Thread thread = new Thread(userLoginUseCase);
-        thread.start();
     }
 
     public void userSignUp(Context context, String username, String psd, String email) {
@@ -48,8 +46,6 @@ public class UserLoginPresenter implements Presenter {
             userLoginUseCase = new UserLoginOrSignUpUseCaseImpl();
         }
         userLoginUseCase.execute(userLoginCallback, context, userModelDataMapper.transform(userModel), 1);
-        Thread thread = new Thread(userLoginUseCase);
-        thread.start();
     }
 
     private final UserLoginOrSignUpUseCase.UserLoginOrSignUpCallback userLoginCallback = new UserLoginOrSignUpUseCase.UserLoginOrSignUpCallback() {

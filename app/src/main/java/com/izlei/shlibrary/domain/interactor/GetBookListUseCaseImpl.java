@@ -32,7 +32,7 @@ public class GetBookListUseCaseImpl implements GetBookListUseCase {
 
     public GetBookListUseCaseImpl() {
         bookRepository = new BookDataRepository();
-        threadExecutor = new JobExecutor();
+        threadExecutor = JobExecutor.getInstance();
         postExecutionThread = new UIThread();
     }
 

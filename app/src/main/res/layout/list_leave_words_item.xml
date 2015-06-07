@@ -15,8 +15,8 @@
         android:id="@+id/rl_leave_words"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/iv_avatar"
-        android:layout_marginStart="5dp"
+        android:layout_toRightOf="@+id/iv_avatar"
+        android:layout_marginLeft="5dp"
         >
         <TextView
             android:id="@+id/tv_username"
@@ -52,8 +52,8 @@
                 android:id="@+id/btn_comment"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="10dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="10dp"
                 android:background="@mipmap/ic_action_communication_comment"
                 />
         </RelativeLayout>

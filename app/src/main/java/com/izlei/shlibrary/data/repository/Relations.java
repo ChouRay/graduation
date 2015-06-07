@@ -38,7 +38,7 @@ public class Relations {
     public Relations(UserEntity user) {
         this.user = user;
     }
-    public void saveCurrentBorrow(BookEntity book) {
+    public void saveCurrentBorrow(final BookEntity book) {
         if (user == null) {
             Log.e(getClass().getSimpleName(),"Current User is Null!");
             return;
@@ -50,12 +50,13 @@ public class Relations {
         currentBorrow.setIsbn(book.getIsbn13());
         currentBorrow.setBorrowDate(System.currentTimeMillis());
         currentBorrow.setSendbackDate(System.currentTimeMillis(), 30);  //return the book date for 30 days
-
         currentBorrow.setUserEntity(user);
         currentBorrow.save(AppController.getInstance(), new SaveListener() {
             @Override
             public void onSuccess() {
                 Log.e(Relations.class.getSimpleName(), "save current_borrow success!");
+                SetUpBookDataRepository setUpBookDataRepository = new SetUpBookDataRepository();
+                setUpBookDataRepository.updateBookBorrowedCount(book);
                 addCurrentBorrowToUser();
             }
 

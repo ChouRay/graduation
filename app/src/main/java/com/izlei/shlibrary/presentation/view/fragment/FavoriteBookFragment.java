@@ -111,7 +111,7 @@ public class FavoriteBookFragment extends BaseFragment implements BookListView,A
         LayoutInflater inflater;
         @Override
         public int getCount() {
-            return bookModelList.size();
+            return (bookModelList != null) ? bookModelList.size() : 0;
         }
 
         @Override
