@@ -183,13 +183,15 @@ public class FavoriteBookFragment extends BaseFragment implements BookListView,A
     @Override
     public void showLoading() {
         this.rl_progress.setVisibility(View.VISIBLE);
-        this.getActivity().setProgressBarIndeterminateVisibility(true);
+        if (this.getActivity() != null)
+            this.getActivity().setProgressBarIndeterminateVisibility(true);
     }
 
     @Override
     public void hideLoading() {
         this.rl_progress.setVisibility(View.GONE);
-        this.getActivity().setProgressBarIndeterminateVisibility(false);
+        if (this.getActivity() != null)
+            this.getActivity().setProgressBarIndeterminateVisibility(false);
     }
 
     @Override

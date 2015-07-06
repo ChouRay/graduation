@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:id="@+id/scrollView_more_book"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        >
+    <TextView
+        android:id="@+id/tv_web_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="hello_web"
+    />
+    </ScrollView>
+
+    <include layout="@layout/view_retry" />
+    <include layout="@layout/view_progress"/>
+
+</LinearLayout>

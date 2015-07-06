@@ -62,7 +62,7 @@ public class RecommendBookListFragment  extends BaseFragment implements BookList
     @InjectView(R.id.rl_retry)
     RelativeLayout rl_retry;
     @InjectView(R.id.rl_progress) RelativeLayout rl_progress;
-    private boolean isRefreshing = false;//ÊÇ·ñË¢ÐÂÖÐ
+    private boolean isRefreshing = false;
     private boolean isLoadingMore = false;
 
     private BookLayoutManager bookLayoutManager;
